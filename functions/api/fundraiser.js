@@ -1,26 +1,17 @@
-function json(
-  data,
-  status = 200
-) {
+function json(data, status = 200) {
   return new Response(
     JSON.stringify(data),
     {
       status,
       headers: {
-        "content-type":
-          "application/json; charset=utf-8",
-
-        "cache-control":
-          "no-store"
+        "content-type": "application/json; charset=utf-8",
+        "cache-control": "no-store"
       }
     }
   );
 }
 
-async function supabaseGet(
-  env,
-  path
-) {
+async function supabaseGet(env, path) {
   if (
     !env.SUPABASE_URL ||
     !env.SUPABASE_SERVICE_ROLE_KEY
@@ -30,22 +21,21 @@ async function supabaseGet(
     );
   }
 
-  const response =
-    await fetch(
-      `${env.SUPABASE_URL}/rest/v1/${path}`,
-      {
-        headers: {
-          apikey:
-            env.SUPABASE_SERVICE_ROLE_KEY,
+  const response = await fetch(
+    `${env.SUPABASE_URL}/rest/v1/${path}`,
+    {
+      headers: {
+        apikey:
+          env.SUPABASE_SERVICE_ROLE_KEY,
 
-          authorization:
-            `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+        authorization:
+          `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
 
-          accept:
-            "application/json"
-        }
+        accept:
+          "application/json"
       }
-    );
+    }
+  );
 
   const text =
     await response.text();
@@ -70,28 +60,23 @@ export async function onRequestGet({
       new URL(request.url);
 
     const teamKey =
-      url.searchParams.get(
-        "team"
-      ) ||
+      url.searchParams.get("team") ||
       "ecb-sunrise-black";
 
     const playerKey =
-      url.searchParams.get(
-        "player"
-      );
+      url.searchParams.get("player");
 
     if (!playerKey) {
       return json(
         {
           success: false,
-          error:
-            "Player is required."
+          error: "Player is required."
         },
         400
       );
     }
 
-    // Find the team
+    // Find the team.
     const teams =
       await supabaseGet(
         env,
@@ -102,8 +87,7 @@ export async function onRequestGet({
       return json(
         {
           success: false,
-          error:
-            "Team not found."
+          error: "Team not found."
         },
         404
       );
@@ -112,7 +96,7 @@ export async function onRequestGet({
     const team =
       teams[0];
 
-    // Find the selected player within that team
+    // Find the player inside the selected team.
     const players =
       await supabaseGet(
         env,
@@ -123,8 +107,7 @@ export async function onRequestGet({
       return json(
         {
           success: false,
-          error:
-            "Player not found."
+          error: "Player not found."
         },
         404
       );
@@ -134,13 +117,30 @@ export async function onRequestGet({
       players[0];
 
     // IMPORTANT:
-    // baseballs does NOT contain team_id.
-    // The relationship to the team is already established
-    // through players.team_id.
+    // Your baseballs table does NOT have a team_id column.
+    // The team relationship is already established through:
+    // baseballs.player_id -> players.team_id
     const baseballs =
       await supabaseGet(
         env,
-        `baseballs?player_id=eq.${encodeURIComponent(player.id)}&select=ball_number,amount_cents,status,donor_name,sold_at&order=ball_number.asc`
+        `baseballs?player_id=eq.${encodeURIComponent(player.id)}&select=ball_number,amount_cents,status,donor_name,sold_at,stripe_session_id&order=ball_number.asc`
+      );
+
+    const soldBaseballs =
+      baseballs.filter(
+        baseball =>
+          baseball.status === "sold"
+      );
+
+    const raisedDollars =
+      soldBaseballs.reduce(
+        (total, baseball) => {
+          return (
+            total +
+            Number(baseball.ball_number || 0)
+          );
+        },
+        0
       );
 
     return json({
@@ -163,6 +163,20 @@ export async function onRequestGet({
 
         player_number:
           player.player_number
+      },
+
+      totals: {
+        baseball_count:
+          baseballs.length,
+
+        sold_count:
+          soldBaseballs.length,
+
+        raised_dollars:
+          raisedDollars,
+
+        goal_dollars:
+          5050
       },
 
       baseballs
