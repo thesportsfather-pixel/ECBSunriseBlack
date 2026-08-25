@@ -1,18 +1,31 @@
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      "content-type": "application/json; charset=utf-8",
-      "cache-control": "no-store"
+function json(
+  data,
+  status = 200
+) {
+
+  return new Response(
+    JSON.stringify(data),
+    {
+      status,
+      headers:{
+        "content-type":
+          "application/json; charset=utf-8",
+
+        "cache-control":
+          "no-store"
+      }
     }
-  });
+  );
+
 }
+
 
 async function supabaseRequest(
   env,
   path,
   options = {}
 ) {
+
   if (
     !env.SUPABASE_URL ||
     !env.SUPABASE_SERVICE_ROLE_KEY
@@ -22,30 +35,33 @@ async function supabaseRequest(
     );
   }
 
-  const response = await fetch(
-    `${env.SUPABASE_URL}/rest/v1/${path}`,
-    {
-      ...options,
+  const response =
+    await fetch(
+      `${env.SUPABASE_URL}/rest/v1/${path}`,
+      {
+        ...options,
 
-      headers: {
-        apikey:
-          env.SUPABASE_SERVICE_ROLE_KEY,
+        headers:{
+          apikey:
+            env.SUPABASE_SERVICE_ROLE_KEY,
 
-        authorization:
-          `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+          authorization:
+            `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
 
-        accept:
-          "application/json",
+          accept:
+            "application/json",
 
-        ...(options.headers || {})
+          ...(options.headers || {})
+        }
       }
-    }
-  );
+    );
 
   const text =
     await response.text();
 
-  if (!response.ok) {
+  if (
+    !response.ok
+  ) {
     throw new Error(
       `Supabase ${response.status}: ${text}`
     );
@@ -54,32 +70,40 @@ async function supabaseRequest(
   return text
     ? JSON.parse(text)
     : null;
+
 }
+
 
 async function getStripeSession(
   env,
   sessionId
 ) {
-  if (!env.STRIPE_SECRET_KEY) {
+
+  if (
+    !env.STRIPE_SECRET_KEY
+  ) {
     throw new Error(
       "Missing STRIPE_SECRET_KEY."
     );
   }
 
-  const response = await fetch(
-    `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`,
-    {
-      headers: {
-        authorization:
-          `Bearer ${env.STRIPE_SECRET_KEY}`
+  const response =
+    await fetch(
+      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`,
+      {
+        headers:{
+          authorization:
+            `Bearer ${env.STRIPE_SECRET_KEY}`
+        }
       }
-    }
-  );
+    );
 
   const data =
     await response.json();
 
-  if (!response.ok) {
+  if (
+    !response.ok
+  ) {
     throw new Error(
       data?.error?.message ||
       "Unable to retrieve Stripe session."
@@ -87,24 +111,70 @@ async function getStripeSession(
   }
 
   return data;
+
 }
+
 
 async function finalizePayment(
   env,
   session
 ) {
+
   if (
     session.payment_status !==
     "paid"
   ) {
+
     return {
-      paid: false,
-      updatedRows: 0
+      paid:false
     };
+
   }
 
   const metadata =
-    session.metadata || {};
+    session.metadata ||
+    {};
+
+  const donationType =
+    metadata.donation_type ||
+    "baseball";
+
+  const donorName =
+    metadata.anonymous ===
+    "true"
+      ? "Anonymous"
+      : (
+          metadata.donor_name ||
+          "Anonymous"
+        );
+
+
+  /* GENERAL DONATION */
+
+  if (
+    donationType ===
+    "general"
+  ) {
+
+    return {
+      paid:true,
+
+      donationType:
+        "general",
+
+      donorName,
+
+      amountDollars:
+        Number(
+          session.amount_total ||
+          0
+        ) / 100
+    };
+
+  }
+
+
+  /* BASEBALL DONATION */
 
   const teamKey =
     metadata.team_key;
@@ -114,24 +184,17 @@ async function finalizePayment(
 
   const baseballNumbers =
     String(
-      metadata.baseballs || ""
+      metadata.baseballs ||
+      ""
     )
       .split(",")
       .map(Number)
       .filter(
-        n =>
-          Number.isInteger(n) &&
-          n >= 1 &&
-          n <= 100
+        number =>
+          Number.isInteger(number) &&
+          number >= 1 &&
+          number <= 100
       );
-
-  const donorName =
-    metadata.anonymous === "true"
-      ? "Anonymous"
-      : (
-          metadata.donor_name ||
-          "Anonymous"
-        );
 
   if (
     !teamKey ||
@@ -149,21 +212,23 @@ async function finalizePayment(
       `teams?team_key=eq.${encodeURIComponent(teamKey)}&select=id&limit=1`
     );
 
-  if (!teams?.length) {
+  if (
+    !teams?.length
+  ) {
     throw new Error(
       "Team not found."
     );
   }
 
-  const team = teams[0];
-
   const players =
     await supabaseRequest(
       env,
-      `players?team_id=eq.${encodeURIComponent(team.id)}&player_key=eq.${encodeURIComponent(playerKey)}&select=id&limit=1`
+      `players?team_id=eq.${encodeURIComponent(teams[0].id)}&player_key=eq.${encodeURIComponent(playerKey)}&select=id&limit=1`
     );
 
-  if (!players?.length) {
+  if (
+    !players?.length
+  ) {
     throw new Error(
       "Player not found."
     );
@@ -175,34 +240,29 @@ async function finalizePayment(
   const rows =
     await supabaseRequest(
       env,
-      `baseballs?player_id=eq.${encodeURIComponent(player.id)}&ball_number=in.(${baseballNumbers.join(",")})&select=id,ball_number,status,stripe_session_id`
+      `baseballs?player_id=eq.${encodeURIComponent(player.id)}&ball_number=in.(${baseballNumbers.join(",")})&select=ball_number,status,stripe_session_id`
     );
 
   const updatable =
     (rows || []).filter(
       row =>
         row.status ===
-          "available" ||
+        "available" ||
         row.stripe_session_id ===
-          session.id
+        session.id
     );
 
-  if (updatable.length) {
-    const numbers =
-      updatable
-        .map(
-          row =>
-            row.ball_number
-        )
-        .join(",");
+  if (
+    updatable.length
+  ) {
 
     await supabaseRequest(
       env,
-      `baseballs?player_id=eq.${encodeURIComponent(player.id)}&ball_number=in.(${numbers})`,
+      `baseballs?player_id=eq.${encodeURIComponent(player.id)}&ball_number=in.(${updatable.map(row => row.ball_number).join(",")})`,
       {
-        method: "PATCH",
+        method:"PATCH",
 
-        headers: {
+        headers:{
           "content-type":
             "application/json",
 
@@ -212,7 +272,8 @@ async function finalizePayment(
 
         body:
           JSON.stringify({
-            status: "sold",
+            status:
+              "sold",
 
             donor_name:
               donorName,
@@ -226,23 +287,35 @@ async function finalizePayment(
           })
       }
     );
+
   }
 
   return {
-    paid: true,
+    paid:true,
+
+    donationType:
+      "baseball",
+
     playerKey,
+
     baseballNumbers,
+
     donorName,
+
     updatedRows:
       updatable.length
   };
+
 }
+
 
 export async function onRequestGet({
   request,
   env
 }) {
+
   try {
+
     const url =
       new URL(
         request.url
@@ -255,11 +328,14 @@ export async function onRequestGet({
 
     if (
       !sessionId ||
-      !sessionId.startsWith("cs_")
+      !sessionId.startsWith(
+        "cs_"
+      )
     ) {
       return json(
         {
-          success: false,
+          success:false,
+
           error:
             "A valid Stripe session_id is required."
         },
@@ -280,20 +356,29 @@ export async function onRequestGet({
       );
 
     return json({
-      success: true,
+      success:true,
       ...result
     });
-  } catch (error) {
-    console.error(error);
+
+  } catch (
+    error
+  ) {
+
+    console.error(
+      error
+    );
 
     return json(
       {
-        success: false,
+        success:false,
+
         error:
           error.message ||
           "Unable to verify payment."
       },
       500
     );
+
   }
+
 }
