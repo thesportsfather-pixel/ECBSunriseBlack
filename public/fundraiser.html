@@ -1,19 +1,1791 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
 
-  <script>
-    const destination =
-      "/" + window.location.search;
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-    window.location.replace(destination);
-  </script>
+  <title>ECB Sunrise Black | Player Fundraiser</title>
 
-  <title>ECB Sunrise Black</title>
+  <style>
+    :root {
+      --navy: #002855;
+      --navy-dark: #00152e;
+      --yellow: #ffe600;
+      --yellow-soft: #fff36a;
+      --white: #ffffff;
+      --muted: #aebbc9;
+      --green: #24c27a;
+      --red: #ff6868;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      color: white;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #123e6b 0%,
+          #001b3a 45%,
+          #000814 100%
+        );
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      width: min(1120px, 94%);
+      margin: 0 auto;
+
+      padding:
+        24px
+        0
+        70px;
+    }
+
+    /* HEADER */
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 16px;
+
+      margin-bottom: 20px;
+    }
+
+    .back-link {
+      color: var(--yellow);
+
+      font-size: 14px;
+      font-weight: 900;
+
+      text-decoration: none;
+    }
+
+    .team-name {
+      color: #d6e0eb;
+
+      font-size: 12px;
+      font-weight: 900;
+
+      letter-spacing: 2px;
+
+      text-transform: uppercase;
+    }
+
+    /* HERO */
+
+    .hero {
+      text-align: center;
+
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      display: block;
+
+      width: min(520px, 88vw);
+      max-height: 210px;
+
+      object-fit: contain;
+
+      margin:
+        0
+        auto
+        12px;
+    }
+
+    .road-label {
+      color: var(--yellow);
+
+      font-size: 13px;
+      font-weight: 900;
+
+      letter-spacing: 3px;
+
+      text-transform: uppercase;
+
+      margin-bottom: 9px;
+    }
+
+    .player-name {
+      font-size:
+        clamp(
+          34px,
+          7vw,
+          65px
+        );
+
+      font-weight: 950;
+
+      line-height: 1;
+
+      text-transform: uppercase;
+    }
+
+    .player-number {
+      color: var(--yellow);
+    }
+
+    .instructions {
+      width: min(700px, 100%);
+
+      margin:
+        16px
+        auto
+        0;
+
+      color: #c0ccd8;
+
+      line-height: 1.6;
+
+      font-size: 15px;
+    }
+
+    /* PROGRESS */
+
+    .progress-card {
+      margin:
+        0
+        auto
+        28px;
+
+      padding: 22px;
+
+      border-radius: 18px;
+
+      border:
+        1px solid
+        rgba(255,230,0,.25);
+
+      background:
+        rgba(3,37,74,.87);
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      margin-bottom: 12px;
+
+      font-weight: 900;
+    }
+
+    .raised {
+      color: var(--yellow);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 15px;
+
+      border-radius: 999px;
+
+      overflow: hidden;
+
+      background:
+        rgba(255,255,255,.11);
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+
+      border-radius: inherit;
+
+      background: var(--yellow);
+
+      transition: width .3s ease;
+    }
+
+    .sold-count {
+      margin-top: 10px;
+
+      text-align: right;
+
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+    /* DONATION BOX */
+
+    .selection-box {
+      position: sticky;
+
+      top: 12px;
+
+      z-index: 20;
+
+      margin-bottom: 25px;
+
+      padding: 16px 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 16px;
+
+      border-radius: 16px;
+
+      background:
+        rgba(0,17,38,.96);
+
+      border:
+        2px solid
+        rgba(255,230,0,.38);
+
+      box-shadow:
+        0 12px 28px
+        rgba(0,0,0,.3);
+    }
+
+    .selection-label {
+      color: var(--muted);
+
+      font-size: 12px;
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: 1px;
+    }
+
+    .selection-total {
+      margin-top: 3px;
+
+      color: var(--yellow);
+
+      font-size: 26px;
+      font-weight: 950;
+    }
+
+    .checkout-button {
+      min-height: 50px;
+
+      padding:
+        0
+        25px;
+
+      border: none;
+      border-radius: 999px;
+
+      background: var(--yellow);
+
+      color: var(--navy-dark);
+
+      font-weight: 950;
+
+      text-transform: uppercase;
+
+      transition:
+        transform .15s ease,
+        opacity .15s ease;
+    }
+
+    .checkout-button:hover:not(:disabled) {
+      transform: scale(1.03);
+    }
+
+    .checkout-button:disabled {
+      opacity: .35;
+      cursor: default;
+    }
+
+    /* GRID */
+
+    .board-title {
+      margin-bottom: 15px;
+
+      text-align: center;
+
+      font-size: 25px;
+      font-weight: 950;
+
+      text-transform: uppercase;
+    }
+
+    .board-subtitle {
+      margin-bottom: 20px;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 14px;
+    }
+
+    .ball-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          10,
+          minmax(0, 1fr)
+        );
+
+      gap: 9px;
+    }
+
+    .ball {
+      aspect-ratio: 1 / 1;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      border:
+        2px solid
+        rgba(255,255,255,.22);
+
+      background:
+        radial-gradient(
+          circle at 35% 30%,
+          #ffffff,
+          #e8edf2
+        );
+
+      color: #00172f;
+
+      box-shadow:
+        inset 0 -5px 10px rgba(0,0,0,.12),
+        0 3px 7px rgba(0,0,0,.25);
+
+      transition:
+        transform .14s ease,
+        border-color .14s ease,
+        box-shadow .14s ease;
+
+      user-select: none;
+    }
+
+    .ball:hover:not(.sold) {
+      transform: scale(1.07);
+
+      border-color: var(--yellow);
+    }
+
+    .ball-number {
+      font-size:
+        clamp(
+          12px,
+          2vw,
+          18px
+        );
+
+      font-weight: 950;
+
+      line-height: 1;
+    }
+
+    .ball-amount {
+      margin-top: 3px;
+
+      font-size:
+        clamp(
+          8px,
+          1.3vw,
+          11px
+        );
+
+      font-weight: 800;
+
+      color: #52606e;
+    }
+
+    .ball.selected {
+      background: var(--yellow);
+
+      border-color: white;
+
+      box-shadow:
+        0 0 0 4px rgba(255,230,0,.18),
+        0 6px 15px rgba(0,0,0,.3);
+    }
+
+    .ball.selected .ball-amount {
+      color: #25303d;
+    }
+
+    .ball.sold {
+      cursor: default;
+
+      background: #26394d;
+
+      color: #71849a;
+
+      border-color: #32495f;
+
+      opacity: .72;
+    }
+
+    .ball.sold .ball-amount {
+      color: #71849a;
+    }
+
+    /* LOADING / ERROR */
+
+    .message {
+      padding: 30px;
+
+      text-align: center;
+
+      color: #d5deea;
+    }
+
+    .retry-button {
+      display: none;
+
+      margin:
+        15px
+        auto
+        0;
+
+      padding:
+        12px
+        25px;
+
+      border: none;
+      border-radius: 999px;
+
+      background: var(--yellow);
+
+      color: var(--navy-dark);
+
+      font-weight: 900;
+    }
+
+    /* CHECKOUT MODAL */
+
+    .overlay {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 1000;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      background:
+        rgba(0,7,18,.88);
+
+      backdrop-filter: blur(8px);
+    }
+
+    .overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      width: min(470px, 100%);
+
+      padding: 29px;
+
+      border-radius: 22px;
+
+      border:
+        2px solid
+        rgba(255,230,0,.4);
+
+      background: #041f40;
+
+      box-shadow:
+        0 30px 80px
+        rgba(0,0,0,.6);
+    }
+
+    .modal h2 {
+      color: var(--yellow);
+
+      font-size: 27px;
+
+      margin-bottom: 5px;
+    }
+
+    .checkout-total {
+      font-size: 40px;
+      font-weight: 950;
+
+      margin-bottom: 8px;
+    }
+
+    .checkout-detail {
+      color: #bbc8d6;
+
+      line-height: 1.5;
+
+      font-size: 13px;
+
+      margin-bottom: 21px;
+    }
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    .field label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .field input[type="text"] {
+      width: 100%;
+      height: 52px;
+
+      padding:
+        0
+        14px;
+
+      border-radius: 10px;
+
+      border:
+        1px solid
+        rgba(255,255,255,.2);
+
+      outline: none;
+
+      color: white;
+
+      background: #001a35;
+    }
+
+    .field input[type="text"]:focus {
+      border-color: var(--yellow);
+    }
+
+    .anonymous {
+      display: flex;
+      align-items: center;
+
+      gap: 10px;
+
+      margin-bottom: 22px;
+
+      font-size: 14px;
+    }
+
+    .anonymous input {
+      width: 19px;
+      height: 19px;
+
+      accent-color: var(--yellow);
+    }
+
+    .modal-actions {
+      display: flex;
+
+      gap: 10px;
+    }
+
+    .modal-actions button {
+      flex: 1;
+
+      min-height: 50px;
+
+      border: none;
+      border-radius: 11px;
+
+      font-weight: 900;
+    }
+
+    .cancel {
+      background: #153c64;
+      color: white;
+    }
+
+    .pay {
+      background: var(--yellow);
+      color: var(--navy-dark);
+    }
+
+    .checkout-error {
+      display: none;
+
+      margin-top: 14px;
+
+      color: #ffaaaa;
+
+      font-size: 13px;
+
+      line-height: 1.4;
+    }
+
+    /* SUCCESS */
+
+    .success-banner {
+      display: none;
+
+      margin-bottom: 22px;
+
+      padding: 17px 20px;
+
+      border-radius: 15px;
+
+      color: white;
+
+      background:
+        rgba(36,194,122,.20);
+
+      border:
+        1px solid
+        rgba(36,194,122,.6);
+
+      text-align: center;
+
+      font-weight: 900;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 800px) {
+
+      .ball-grid {
+        grid-template-columns:
+          repeat(
+            8,
+            minmax(0, 1fr)
+          );
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .page {
+        width: 96%;
+      }
+
+      .ball-grid {
+        grid-template-columns:
+          repeat(
+            5,
+            minmax(0, 1fr)
+          );
+
+        gap: 8px;
+      }
+
+      .selection-box {
+        top: 5px;
+
+        padding:
+          13px
+          14px;
+      }
+
+      .selection-total {
+        font-size: 23px;
+      }
+
+      .checkout-button {
+        padding:
+          0
+          17px;
+
+        font-size: 12px;
+      }
+
+      .modal {
+        padding:
+          24px
+          18px;
+      }
+
+    }
+  </style>
 </head>
 
 <body>
+
+  <main class="page">
+
+    <div class="topbar">
+
+      <a
+        href="/"
+        class="back-link"
+      >
+        ← Back to Team
+      </a>
+
+      <div class="team-name">
+        ECB Sunrise Black
+      </div>
+
+    </div>
+
+
+    <section class="hero">
+
+      <img
+        src="/ecb-sunrise-black-logo.png"
+        alt="ECB Sunrise Black"
+        class="logo"
+      />
+
+      <div class="road-label">
+        Road to Cooperstown
+      </div>
+
+      <h1
+        class="player-name"
+        id="playerName"
+      >
+        Loading Player...
+      </h1>
+
+      <p class="instructions">
+        Select one or more available baseballs below.
+        The number on each baseball is also the donation
+        amount. For example, baseball #25 is a $25 donation.
+      </p>
+
+    </section>
+
+
+    <div
+      class="success-banner"
+      id="successBanner"
+    >
+      Thank you! Your payment was successful.
+    </div>
+
+
+    <section class="progress-card">
+
+      <div class="progress-top">
+
+        <span>
+          Fundraiser Progress
+        </span>
+
+        <span
+          class="raised"
+          id="raisedText"
+        >
+          $0 raised
+        </span>
+
+      </div>
+
+      <div class="progress-track">
+
+        <div
+          class="progress-fill"
+          id="progressFill"
+        ></div>
+
+      </div>
+
+      <div
+        class="sold-count"
+        id="soldCount"
+      >
+        0 of 100 baseballs sponsored
+      </div>
+
+    </section>
+
+
+    <section
+      class="selection-box"
+      id="selectionBox"
+    >
+
+      <div>
+
+        <div class="selection-label">
+          Your Selection
+        </div>
+
+        <div
+          class="selection-total"
+          id="selectionTotal"
+        >
+          $0
+        </div>
+
+      </div>
+
+      <button
+        class="checkout-button"
+        id="checkoutButton"
+        type="button"
+        disabled
+      >
+        Checkout
+      </button>
+
+    </section>
+
+
+    <section>
+
+      <h2 class="board-title">
+        Select Your Baseballs
+      </h2>
+
+      <p class="board-subtitle">
+        White baseballs are available. Yellow baseballs are selected.
+        Dark baseballs have already been sponsored.
+      </p>
+
+
+      <div
+        class="message"
+        id="loadingMessage"
+      >
+        Loading fundraiser...
+      </div>
+
+
+      <button
+        class="retry-button"
+        id="retryButton"
+        type="button"
+      >
+        Try Again
+      </button>
+
+
+      <div
+        class="ball-grid"
+        id="ballGrid"
+      ></div>
+
+    </section>
+
+  </main>
+
+
+  <!-- CHECKOUT -->
+
+  <div
+    class="overlay"
+    id="checkoutOverlay"
+  >
+
+    <div class="modal">
+
+      <h2>
+        Complete Your Donation
+      </h2>
+
+      <div
+        class="checkout-total"
+        id="checkoutTotal"
+      >
+        $0
+      </div>
+
+      <p
+        class="checkout-detail"
+        id="checkoutDetail"
+      ></p>
+
+
+      <div class="field">
+
+        <label for="donorName">
+          Donor Name
+        </label>
+
+        <input
+          type="text"
+          id="donorName"
+          maxlength="100"
+          placeholder="Your name"
+        />
+
+      </div>
+
+
+      <label class="anonymous">
+
+        <input
+          type="checkbox"
+          id="anonymous"
+        />
+
+        Make this donation anonymous
+
+      </label>
+
+
+      <div class="modal-actions">
+
+        <button
+          type="button"
+          class="cancel"
+          id="cancelCheckout"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="pay"
+          id="payButton"
+        >
+          Continue to Stripe
+        </button>
+
+      </div>
+
+
+      <div
+        class="checkout-error"
+        id="checkoutError"
+      ></div>
+
+    </div>
+
+  </div>
+
+
+<script>
+
+  const TEAM_KEY =
+    "ecb-sunrise-black-cooperstown";
+
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const playerKey =
+    (
+      params.get("player") ||
+      ""
+    ).trim();
+
+
+  const paymentStatus =
+    params.get("payment");
+
+
+  const sessionId =
+    params.get("session_id");
+
+
+  let currentPlayer = null;
+
+  let baseballs = [];
+
+  const selected =
+    new Set();
+
+
+  const playerName =
+    document.getElementById(
+      "playerName"
+    );
+
+  const grid =
+    document.getElementById(
+      "ballGrid"
+    );
+
+  const loadingMessage =
+    document.getElementById(
+      "loadingMessage"
+    );
+
+  const retryButton =
+    document.getElementById(
+      "retryButton"
+    );
+
+  const selectionTotal =
+    document.getElementById(
+      "selectionTotal"
+    );
+
+  const checkoutButton =
+    document.getElementById(
+      "checkoutButton"
+    );
+
+  const progressFill =
+    document.getElementById(
+      "progressFill"
+    );
+
+  const raisedText =
+    document.getElementById(
+      "raisedText"
+    );
+
+  const soldCount =
+    document.getElementById(
+      "soldCount"
+    );
+
+  const overlay =
+    document.getElementById(
+      "checkoutOverlay"
+    );
+
+  const checkoutTotal =
+    document.getElementById(
+      "checkoutTotal"
+    );
+
+  const checkoutDetail =
+    document.getElementById(
+      "checkoutDetail"
+    );
+
+  const donorName =
+    document.getElementById(
+      "donorName"
+    );
+
+  const anonymous =
+    document.getElementById(
+      "anonymous"
+    );
+
+  const cancelCheckout =
+    document.getElementById(
+      "cancelCheckout"
+    );
+
+  const payButton =
+    document.getElementById(
+      "payButton"
+    );
+
+  const checkoutError =
+    document.getElementById(
+      "checkoutError"
+    );
+
+  const successBanner =
+    document.getElementById(
+      "successBanner"
+    );
+
+
+  function money(value) {
+
+    return new Intl.NumberFormat(
+      "en-US",
+      {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0
+      }
+    ).format(value);
+
+  }
+
+
+  function showError(message) {
+
+    checkoutError.textContent =
+      message;
+
+    checkoutError.style.display =
+      "block";
+
+  }
+
+
+  function clearError() {
+
+    checkoutError.textContent =
+      "";
+
+    checkoutError.style.display =
+      "none";
+
+  }
+
+
+  function selectedBaseballs() {
+
+    return baseballs.filter(
+      ball =>
+        selected.has(
+          Number(ball.ball_number)
+        )
+    );
+
+  }
+
+
+  function updateSelection() {
+
+    const chosen =
+      selectedBaseballs();
+
+
+    const total =
+      chosen.reduce(
+        (sum, ball) =>
+          sum +
+          Number(
+            ball.amount_cents ||
+            ball.ball_number * 100
+          ),
+        0
+      );
+
+
+    selectionTotal.textContent =
+      money(total / 100);
+
+
+    checkoutButton.disabled =
+      chosen.length === 0;
+
+  }
+
+
+  function updateProgress(data) {
+
+    const totals =
+      data.totals || {};
+
+
+    const raised =
+      Number(
+        totals.raisedDollars ||
+        0
+      );
+
+
+    const sold =
+      Number(
+        totals.soldCount ||
+        0
+      );
+
+
+    const goal =
+      Number(
+        totals.goalDollars ||
+        5050
+      );
+
+
+    const percent =
+      goal > 0
+        ? Math.min(
+            100,
+            raised / goal * 100
+          )
+        : 0;
+
+
+    raisedText.textContent =
+      money(raised) +
+      " raised";
+
+
+    soldCount.textContent =
+      sold +
+      " of 100 baseballs sponsored";
+
+
+    progressFill.style.width =
+      percent + "%";
+
+  }
+
+
+  function renderBaseballs() {
+
+    grid.innerHTML = "";
+
+
+    baseballs.forEach(ball => {
+
+      const number =
+        Number(
+          ball.ball_number
+        );
+
+
+      const sold =
+        ball.status === "sold";
+
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.type =
+        "button";
+
+
+      button.className =
+        "ball";
+
+
+      if (sold) {
+
+        button.classList.add(
+          "sold"
+        );
+
+        button.disabled =
+          true;
+
+      }
+
+
+      if (
+        selected.has(number)
+      ) {
+
+        button.classList.add(
+          "selected"
+        );
+
+      }
+
+
+      button.innerHTML = `
+
+        <span class="ball-number">
+          ${number}
+        </span>
+
+        <span class="ball-amount">
+          $${number}
+        </span>
+
+      `;
+
+
+      if (!sold) {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            if (
+              selected.has(number)
+            ) {
+
+              selected.delete(
+                number
+              );
+
+            }
+            else {
+
+              selected.add(
+                number
+              );
+
+            }
+
+
+            renderBaseballs();
+
+            updateSelection();
+
+          }
+        );
+
+      }
+
+
+      grid.appendChild(
+        button
+      );
+
+    });
+
+  }
+
+
+  async function loadFundraiser() {
+
+    if (!playerKey) {
+
+      loadingMessage.textContent =
+        "No player was selected.";
+
+      return;
+
+    }
+
+
+    loadingMessage.style.display =
+      "block";
+
+    loadingMessage.textContent =
+      "Loading fundraiser...";
+
+
+    retryButton.style.display =
+      "none";
+
+    grid.innerHTML = "";
+
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/fundraiser?player=" +
+          encodeURIComponent(
+            playerKey
+          ),
+          {
+            cache: "no-store"
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+
+        throw new Error(
+          data.error ||
+          "Unable to load fundraiser."
+        );
+
+      }
+
+
+      currentPlayer =
+        data.player;
+
+
+      baseballs =
+        Array.isArray(
+          data.baseballs
+        )
+          ? data.baseballs
+          : [];
+
+
+      playerName.innerHTML =
+        `<span class="player-number">#${currentPlayer.number}</span> ${currentPlayer.name}`;
+
+
+      updateProgress(data);
+
+      renderBaseballs();
+
+      updateSelection();
+
+
+      loadingMessage.style.display =
+        "none";
+
+    }
+    catch (error) {
+
+      console.error(error);
+
+
+      loadingMessage.style.display =
+        "block";
+
+
+      loadingMessage.textContent =
+        error.message ||
+        "Unable to load fundraiser.";
+
+
+      retryButton.style.display =
+        "block";
+
+    }
+
+  }
+
+
+  retryButton.addEventListener(
+    "click",
+    loadFundraiser
+  );
+
+
+  checkoutButton.addEventListener(
+    "click",
+    () => {
+
+      const chosen =
+        selectedBaseballs();
+
+
+      if (!chosen.length) {
+        return;
+      }
+
+
+      const total =
+        chosen.reduce(
+          (sum, ball) =>
+            sum +
+            Number(
+              ball.amount_cents ||
+              ball.ball_number * 100
+            ),
+          0
+        );
+
+
+      checkoutTotal.textContent =
+        money(
+          total / 100
+        );
+
+
+      checkoutDetail.textContent =
+        "Baseball" +
+        (
+          chosen.length === 1
+            ? " "
+            : "s "
+        ) +
+        chosen
+          .map(
+            ball =>
+              "#" +
+              ball.ball_number
+          )
+          .join(", ");
+
+
+      clearError();
+
+      overlay.classList.add(
+        "open"
+      );
+
+    }
+  );
+
+
+  cancelCheckout.addEventListener(
+    "click",
+    () => {
+
+      overlay.classList.remove(
+        "open"
+      );
+
+      clearError();
+
+    }
+  );
+
+
+  overlay.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target === overlay
+      ) {
+
+        overlay.classList.remove(
+          "open"
+        );
+
+      }
+
+    }
+  );
+
+
+  anonymous.addEventListener(
+    "change",
+    () => {
+
+      if (
+        anonymous.checked
+      ) {
+
+        donorName.value =
+          "";
+
+        donorName.disabled =
+          true;
+
+      }
+      else {
+
+        donorName.disabled =
+          false;
+
+      }
+
+    }
+  );
+
+
+  payButton.addEventListener(
+    "click",
+    async () => {
+
+      clearError();
+
+
+      const chosen =
+        Array.from(
+          selected
+        ).sort(
+          (a,b) =>
+            a - b
+        );
+
+
+      if (!chosen.length) {
+
+        showError(
+          "Please select at least one baseball."
+        );
+
+        return;
+
+      }
+
+
+      const isAnonymous =
+        anonymous.checked;
+
+
+      const name =
+        isAnonymous
+          ? "Anonymous"
+          : donorName.value.trim();
+
+
+      if (
+        !isAnonymous &&
+        !name
+      ) {
+
+        showError(
+          "Enter your name or select anonymous."
+        );
+
+        return;
+
+      }
+
+
+      payButton.disabled =
+        true;
+
+
+      payButton.textContent =
+        "Loading...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/create-checkout",
+            {
+              method: "POST",
+
+              headers: {
+                "content-type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  playerKey:
+                    playerKey,
+
+                  baseballNumbers:
+                    chosen,
+
+                  donorName:
+                    name,
+
+                  anonymous:
+                    isAnonymous
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.error ||
+            "Unable to create checkout."
+          );
+
+        }
+
+
+        if (!data.url) {
+
+          throw new Error(
+            "Stripe checkout URL was not returned."
+          );
+
+        }
+
+
+        window.location.href =
+          data.url;
+
+      }
+      catch (error) {
+
+        console.error(error);
+
+
+        showError(
+          error.message ||
+          "Unable to create checkout."
+        );
+
+
+        payButton.disabled =
+          false;
+
+
+        payButton.textContent =
+          "Continue to Stripe";
+
+      }
+
+    }
+  );
+
+
+  async function verifyReturnedPayment() {
+
+    if (
+      paymentStatus !==
+        "success" ||
+      !sessionId
+    ) {
+
+      return;
+
+    }
+
+
+    try {
+
+      const response =
+        await fetch(
+          "/api/verify-payment?session_id=" +
+          encodeURIComponent(
+            sessionId
+          ),
+          {
+            cache: "no-store"
+          }
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        response.ok &&
+        data.success &&
+        data.paid
+      ) {
+
+        successBanner.style.display =
+          "block";
+
+
+        selected.clear();
+
+      }
+
+    }
+    catch (error) {
+
+      console.error(
+        "Payment verification error:",
+        error
+      );
+
+    }
+
+  }
+
+
+  async function initialize() {
+
+    await verifyReturnedPayment();
+
+    await loadFundraiser();
+
+  }
+
+
+  initialize();
+
+</script>
+
 </body>
 </html>
