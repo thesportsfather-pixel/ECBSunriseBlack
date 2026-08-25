@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#071b49" />
+  <title>ECB Sunrise | Road to Cooperstown</title>
+  <meta name="description" content="Support ECB Sunrise on the Road to Cooperstown by selecting a baseball donation." />
+  <style>
+    :root{
+      --navy:#071b49;
+      --navy2:#0b2a6b;
+      --yellow:#fff200;
+      --ink:#0f172a;
+      --muted:#64748b;
+      --line:#d9e2ec;
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --sold:#d7dde5;
+      --success:#0f8a4b;
+      --danger:#b42318;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top, rgba(255,242,0,.11), transparent 35%),
+        linear-gradient(180deg,#071b49 0,#091535 280px,var(--bg) 280px);
+    }
+    a{color:inherit}
+    .wrap{width:min(1120px,calc(100% - 28px));margin:auto}
+    .hero{
+      min-height:280px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color:white;
+      padding:28px 0 36px;
+    }
+    .hero-logo{
+      width:min(430px,84vw);
+      max-height:170px;
+      object-fit:contain;
+      filter:drop-shadow(0 10px 24px rgba(0,0,0,.3));
+    }
+    .eyebrow{
+      margin:16px 0 6px;
+      font-size:.82rem;
+      font-weight:900;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--yellow);
+    }
+    h1{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:1}
+    .subtitle{margin:10px auto 0;max-width:720px;color:#dce6ff;font-weight:650}
+    main{padding-bottom:60px}
+    .card{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.4);
+      border-radius:22px;
+      box-shadow:0 16px 50px rgba(15,23,42,.13);
+      padding:24px;
+      margin:18px 0;
+    }
+    .toolbar{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+      align-items:end;
+    }
+    label{display:block;font-weight:800;margin:0 0 8px}
+    select,input{
+      width:100%;
+      border:1px solid #cbd5e1;
+      border-radius:12px;
+      padding:13px 14px;
+      font:inherit;
+      background:white;
+      color:var(--ink);
+      outline:none;
+    }
+    select:focus,input:focus{border-color:var(--navy2);box-shadow:0 0 0 3px rgba(11,42,107,.12)}
+    .player-title{
+      margin:0;
+      font-size:clamp(1.45rem,4vw,2rem);
+      color:var(--navy);
+    }
+    .player-number{color:var(--navy2)}
+    .small{font-size:.92rem;color:var(--muted)}
+    .progress-shell{
+      height:16px;
+      border-radius:999px;
+      background:#e7edf4;
+      overflow:hidden;
+      margin:10px 0 8px;
+    }
+    .progress-bar{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--navy2),var(--yellow));
+      transition:width .35s ease;
+    }
+    .progress-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      font-size:.9rem;
+      font-weight:800;
+    }
+    .board-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .board{
+      display:grid;
+      grid-template-columns:repeat(10,minmax(0,1fr));
+      gap:8px;
+    }
+    .ball{
+      appearance:none;
+      border:2px solid #d4dce8;
+      border-radius:50%;
+      aspect-ratio:1;
+      background:white;
+      color:var(--navy);
+      font-weight:900;
+      font-size:clamp(.72rem,2vw,.95rem);
+      cursor:pointer;
+      position:relative;
+      transition:.15s ease;
+      min-width:0;
+    }
+    .ball:hover:not(:disabled){transform:translateY(-2px);border-color:var(--navy2)}
+    .ball.selected{
+      background:var(--yellow);
+      border-color:var(--navy);
+      color:var(--navy);
+      box-shadow:0 0 0 3px rgba(255,242,0,.22);
+    }
+    .ball.sold{
+      background:var(--sold);
+      border-color:#b6c0cc;
+      color:#7b8796;
+      cursor:not-allowed;
+      text-decoration:line-through;
+    }
+    .checkout-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+      align-items:start;
+    }
+    .anon-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top:12px;
+      font-weight:750;
+    }
+    .anon-row input{width:auto;transform:scale(1.15)}
+    .summary{
+      background:#f8fafc;
+      border:1px solid #e2e8f0;
+      border-radius:16px;
+      padding:18px;
+    }
+    .summary-line{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin:8px 0;
+    }
+    .summary-total{
+      margin-top:14px;
+      padding-top:14px;
+      border-top:1px solid #dbe2ea;
+      font-size:1.3rem;
+      font-weight:950;
+      color:var(--navy);
+    }
+    .checkout-btn{
+      width:100%;
+      border:0;
+      border-radius:14px;
+      background:var(--navy);
+      color:white;
+      font:inherit;
+      font-weight:900;
+      font-size:1.05rem;
+      padding:15px 18px;
+      cursor:pointer;
+      margin-top:15px;
+    }
+    .checkout-btn:hover:not(:disabled){background:var(--navy2)}
+    .checkout-btn:disabled{opacity:.45;cursor:not-allowed}
+    .notice{
+      display:none;
+      padding:13px 15px;
+      margin:0 0 16px;
+      border-radius:12px;
+      font-weight:750;
+    }
+    .notice.show{display:block}
+    .notice.success{background:#e8f7ef;color:#086b39;border:1px solid #bde8cf}
+    .notice.error{background:#fff0ee;color:var(--danger);border:1px solid #ffc8c2}
+    .loading{text-align:center;padding:22px;font-weight:800;color:var(--muted)}
+    .legend{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      font-size:.86rem;
+      color:var(--muted);
+      font-weight:700;
+    }
+    .legend span{display:inline-flex;align-items:center;gap:6px}
+    .dot{width:12px;height:12px;border-radius:50%;display:inline-block;border:1px solid #aab5c3;background:white}
+    .dot.sel{background:var(--yellow);border-color:var(--navy)}
+    .dot.sold{background:var(--sold)}
+    footer{text-align:center;color:#718096;padding:24px 0 10px;font-size:.87rem}
+    @media(max-width:760px){
+      .toolbar,.checkout-grid{grid-template-columns:1fr}
+      .board{grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+      .card{padding:18px;border-radius:18px}
+      body{background:linear-gradient(180deg,#071b49 0,#091535 250px,var(--bg) 250px)}
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <img class="hero-logo" src="/assets/ecb-sunrise-logo.png" alt="ECB Sunrise" />
+      <div class="eyebrow">Road to Cooperstown</div>
+      <h1>ECB Sunrise Fundraiser</h1>
+      <p class="subtitle">Choose a player, select one or more available baseballs, and donate the total of the numbers selected.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="notice" class="notice"></div>
+
+    <section class="card toolbar">
+      <div>
+        <label for="playerSelect">Choose a player</label>
+        <select id="playerSelect" aria-label="Choose a player"></select>
+      </div>
+      <div>
+        <div class="small">Each player has baseballs numbered 1–100.</div>
+        <div class="small">Example: selecting #7 + #20 = a $27 donation.</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="board-head">
+        <div>
+          <h2 class="player-title" id="playerTitle">Loading player…</h2>
+          <div class="small" id="playerSub">Loading fundraiser progress…</div>
+        </div>
+        <div class="legend">
+          <span><i class="dot"></i> Available</span>
+          <span><i class="dot sel"></i> Selected</span>
+          <span><i class="dot sold"></i> Sold</span>
+        </div>
+      </div>
+
+      <div class="progress-shell"><div id="progressBar" class="progress-bar"></div></div>
+      <div class="progress-row">
+        <span id="raisedText">$0 raised</span>
+        <span id="goalText">$5,050 goal</span>
+      </div>
+
+      <div id="loading" class="loading">Loading baseballs…</div>
+      <div id="board" class="board" hidden></div>
+    </section>
+
+    <section class="card checkout-grid">
+      <div>
+        <label for="donorName">Donor name</label>
+        <input id="donorName" type="text" maxlength="80" autocomplete="name" placeholder="Your name" />
+        <label class="anon-row">
+          <input id="anonymous" type="checkbox" />
+          Remain Anonymous
+        </label>
+      </div>
+
+      <div class="summary">
+        <div class="summary-line"><span>Selected baseballs</span><strong id="selectedNumbers">None</strong></div>
+        <div class="summary-line summary-total"><span>Donation total</span><span id="donationTotal">$0</span></div>
+        <button id="checkoutBtn" class="checkout-btn" type="button" disabled>Choose a baseball</button>
+        <div class="small" style="margin-top:10px;text-align:center">Secure checkout powered by Stripe.</div>
+      </div>
+    </section>
+
+    <footer>ECB Sunrise • Road to Cooperstown</footer>
+  </main>
+
+  <script>
+    const TEAM_KEY = "ecb-sunrise";
+    const FALLBACK_PLAYERS = [
+      { playerKey:"anthony-c", playerName:"Anthony C", playerNumber:1 },
+      { playerKey:"jack-j", playerName:"Jack J", playerNumber:2 },
+      { playerKey:"ezra-f", playerName:"Ezra F", playerNumber:7 },
+      { playerKey:"zachary-z", playerName:"Zachary Z", playerNumber:11 },
+      { playerKey:"harrison-z", playerName:"Harrison Z", playerNumber:12 },
+      { playerKey:"nicolas-h", playerName:"Nicolas H", playerNumber:15 },
+      { playerKey:"andrew-p", playerName:"Andrew P", playerNumber:16 },
+      { playerKey:"dylan-n", playerName:"Dylan N", playerNumber:20 },
+      { playerKey:"julian-s", playerName:"Julian S", playerNumber:27 },
+      { playerKey:"eli-o", playerName:"Eli O", playerNumber:28 },
+      { playerKey:"jase-h", playerName:"Jase H", playerNumber:44 }
+    ];
+
+    const els = {
+      select: document.getElementById("playerSelect"),
+      title: document.getElementById("playerTitle"),
+      sub: document.getElementById("playerSub"),
+      board: document.getElementById("board"),
+      loading: document.getElementById("loading"),
+      raised: document.getElementById("raisedText"),
+      goal: document.getElementById("goalText"),
+      progress: document.getElementById("progressBar"),
+      donorName: document.getElementById("donorName"),
+      anonymous: document.getElementById("anonymous"),
+      selectedNumbers: document.getElementById("selectedNumbers"),
+      total: document.getElementById("donationTotal"),
+      checkout: document.getElementById("checkoutBtn"),
+      notice: document.getElementById("notice")
+    };
+
+    let currentPlayerKey = "";
+    let currentData = null;
+    let selected = new Set();
+
+    function money(n){ return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0}).format(n); }
+
+    function showNotice(message, type="success"){
+      els.notice.textContent = message;
+      els.notice.className = `notice show ${type}`;
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    function clearNotice(){
+      els.notice.textContent = "";
+      els.notice.className = "notice";
+    }
+
+    function setQueryPlayer(playerKey){
+      const url = new URL(window.location.href);
+      url.searchParams.set("player", playerKey);
+      url.searchParams.delete("payment");
+      url.searchParams.delete("session_id");
+      history.replaceState({}, "", url);
+    }
+
+    function populatePlayers(players){
+      els.select.innerHTML = "";
+      players.forEach(p => {
+        const o = document.createElement("option");
+        o.value = p.playerKey;
+        o.textContent = `#${p.playerNumber} ${p.playerName}`;
+        els.select.appendChild(o);
+      });
+    }
+
+    function updateSummary(){
+      const nums = [...selected].sort((a,b)=>a-b);
+      const total = nums.reduce((sum,n)=>sum+n,0);
+      els.selectedNumbers.textContent = nums.length ? nums.map(n=>`#${n}`).join(", ") : "None";
+      els.total.textContent = money(total);
+
+      if(!nums.length){
+        els.checkout.disabled = true;
+        els.checkout.textContent = "Choose a baseball";
+      } else {
+        els.checkout.disabled = false;
+        els.checkout.textContent = `Donate ${money(total)}`;
+      }
+    }
+
+    function renderBoard(baseballs){
+      els.board.innerHTML = "";
+      baseballs.forEach(item => {
+        const n = Number(item.ballNumber ?? item.ball_number);
+        const status = item.status || "available";
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "ball";
+        b.textContent = n;
+        b.title = status === "sold"
+          ? `Baseball #${n} is sold${item.donorName || item.donor_name ? ` — ${item.donorName || item.donor_name}` : ""}`
+          : `Select baseball #${n} for a $${n} donation`;
+
+        if(status === "sold"){
+          b.classList.add("sold");
+          b.disabled = true;
+          selected.delete(n);
+        } else {
+          if(selected.has(n)) b.classList.add("selected");
+          b.addEventListener("click", () => {
+            if(selected.has(n)) selected.delete(n);
+            else selected.add(n);
+            b.classList.toggle("selected", selected.has(n));
+            updateSummary();
+          });
+        }
+        els.board.appendChild(b);
+      });
+      els.loading.hidden = true;
+      els.board.hidden = false;
+      updateSummary();
+    }
+
+    async function loadPlayer(playerKey, preserveSelected=false){
+      clearNotice();
+      currentPlayerKey = playerKey;
+      if(!preserveSelected) selected.clear();
+      els.loading.hidden = false;
+      els.board.hidden = true;
+      els.loading.textContent = "Loading baseballs…";
+      els.checkout.disabled = true;
+
+      try{
+        const res = await fetch(`/api/fundraiser?team=${encodeURIComponent(TEAM_KEY)}&player=${encodeURIComponent(playerKey)}`, {cache:"no-store"});
+        const data = await res.json();
+        if(!res.ok || !data.success) throw new Error(data.error || "Unable to load fundraiser.");
+
+        currentData = data;
+        els.title.innerHTML = `${data.player.playerName} <span class="player-number">#${data.player.playerNumber}</span>`;
+        els.sub.textContent = `${data.totals.soldCount} of 100 baseballs sold`;
+        els.raised.textContent = `${money(data.totals.raisedDollars)} raised`;
+        els.goal.textContent = `${money(data.totals.goalDollars)} goal`;
+        const pct = Math.max(0, Math.min(100, data.totals.goalDollars ? (data.totals.raisedDollars / data.totals.goalDollars) * 100 : 0));
+        els.progress.style.width = `${pct}%`;
+        renderBoard(data.baseballs);
+      } catch(err){
+        console.error(err);
+        els.loading.hidden = false;
+        els.board.hidden = true;
+        els.loading.textContent = `Unable to load this fundraiser. ${err.message}`;
+      }
+    }
+
+    async function verifyReturn(){
+      const url = new URL(window.location.href);
+      const payment = url.searchParams.get("payment");
+      const sessionId = url.searchParams.get("session_id");
+      if(payment === "cancelled"){
+        showNotice("Checkout was cancelled. Your baseballs were not charged.", "error");
+        return;
+      }
+      if(payment === "success" && sessionId){
+        try{
+          const res = await fetch(`/api/verify-payment?session_id=${encodeURIComponent(sessionId)}`, {cache:"no-store"});
+          const data = await res.json();
+          if(res.ok && data.success && data.paid){
+            showNotice("Thank you! Your donation was received and your baseball selection has been updated.", "success");
+            if(data.playerKey){
+              currentPlayerKey = data.playerKey;
+              els.select.value = data.playerKey;
+              setQueryPlayer(data.playerKey);
+            }
+            await loadPlayer(currentPlayerKey || els.select.value);
+            return;
+          }
+          showNotice("Payment returned successfully, but confirmation is still processing. Refresh in a moment.", "success");
+        } catch(e){
+          showNotice("Payment returned successfully. Your baseballs may take a moment to update.", "success");
+        }
+      }
+    }
+
+    els.select.addEventListener("change", async () => {
+      setQueryPlayer(els.select.value);
+      await loadPlayer(els.select.value);
+    });
+
+    els.anonymous.addEventListener("change", () => {
+      if(els.anonymous.checked){
+        els.donorName.value = "";
+        els.donorName.disabled = true;
+      } else {
+        els.donorName.disabled = false;
+        els.donorName.focus();
+      }
+    });
+
+    els.checkout.addEventListener("click", async () => {
+      const nums = [...selected].sort((a,b)=>a-b);
+      if(!nums.length) return;
+
+      const anonymous = els.anonymous.checked;
+      const donorName = els.donorName.value.trim();
+      if(!anonymous && !donorName){
+        showNotice("Please enter your name or choose Remain Anonymous.", "error");
+        els.donorName.focus();
+        return;
+      }
+
+      els.checkout.disabled = true;
+      els.checkout.textContent = "Creating Checkout…";
+
+      try{
+        const res = await fetch("/api/create-checkout", {
+          method:"POST",
+          headers:{"content-type":"application/json"},
+          body:JSON.stringify({
+            teamKey: TEAM_KEY,
+            playerKey: currentPlayerKey,
+            baseballs: nums,
+            donorName,
+            anonymous
+          })
+        });
+        const data = await res.json();
+        if(!res.ok || !data.success || !data.url){
+          throw new Error(data.error || "Unable to create Stripe Checkout.");
+        }
+        els.checkout.textContent = "Preparing secure checkout…";
+        window.location.href = data.url;
+      } catch(err){
+        console.error(err);
+        showNotice(err.message || "Unable to begin checkout.", "error");
+        updateSummary();
+      }
+    });
+
+    (async function init(){
+      populatePlayers(FALLBACK_PLAYERS);
+      const params = new URLSearchParams(window.location.search);
+      let requested = params.get("player");
+      if(!FALLBACK_PLAYERS.some(p=>p.playerKey===requested)) requested = FALLBACK_PLAYERS[0].playerKey;
+      els.select.value = requested;
+      currentPlayerKey = requested;
+      if(!params.get("player")) setQueryPlayer(requested);
+      await loadPlayer(requested);
+      await verifyReturn();
+    })();
+  </script>
+</body>
+</html>
