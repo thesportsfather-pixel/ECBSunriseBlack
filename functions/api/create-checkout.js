@@ -1,29 +1,17 @@
-function json(
-  data,
-  status = 200
-) {
-
+function json(data, status = 200) {
   return new Response(
-    JSON.stringify(
-      data
-    ),
+    JSON.stringify(data),
     {
-
       status,
-
       headers: {
-
         "content-type":
           "application/json; charset=utf-8",
 
         "cache-control":
           "no-store"
-
       }
-
     }
   );
-
 }
 
 async function supabaseRequest(
@@ -31,122 +19,87 @@ async function supabaseRequest(
   path,
   options = {}
 ) {
-
   if (
-    !env.SUPABASE_URL
-    ||
+    !env.SUPABASE_URL ||
     !env.SUPABASE_SERVICE_ROLE_KEY
   ) {
-
     throw new Error(
       "Missing Supabase server configuration."
     );
-
   }
 
-  const response =
-    await fetch(
+  const response = await fetch(
+    `${env.SUPABASE_URL}/rest/v1/${path}`,
+    {
+      ...options,
 
-      `${env.SUPABASE_URL}/rest/v1/${path}`,
+      headers: {
+        apikey:
+          env.SUPABASE_SERVICE_ROLE_KEY,
 
-      {
+        authorization:
+          `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
 
-        ...options,
+        accept:
+          "application/json",
 
-        headers: {
-
-          apikey:
-            env.SUPABASE_SERVICE_ROLE_KEY,
-
-          authorization:
-            `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
-
-          accept:
-            "application/json",
-
-          ...(options.headers || {})
-
-        }
-
+        ...(options.headers || {})
       }
-
-    );
+    }
+  );
 
   const text =
     await response.text();
 
-  if (
-    !response.ok
-  ) {
-
+  if (!response.ok) {
     throw new Error(
       `Supabase ${response.status}: ${text}`
     );
-
   }
 
   return text
     ? JSON.parse(text)
     : null;
-
 }
 
-async function stripeCheckout(
+async function createStripeSession(
   env,
   values
 ) {
-
-  if (
-    !env.STRIPE_SECRET_KEY
-  ) {
-
+  if (!env.STRIPE_SECRET_KEY) {
     throw new Error(
       "Missing STRIPE_SECRET_KEY."
     );
-
   }
 
   const body =
     new URLSearchParams();
 
-  Object.entries(
-    values
-  ).forEach(
-    ([key,value]) => {
-
+  Object.entries(values).forEach(
+    ([key, value]) => {
       body.append(
         key,
         String(value)
       );
-
     }
   );
 
-  const response =
-    await fetch(
+  const response = await fetch(
+    "https://api.stripe.com/v1/checkout/sessions",
+    {
+      method: "POST",
 
-      "https://api.stripe.com/v1/checkout/sessions",
+      headers: {
+        authorization:
+          `Bearer ${env.STRIPE_SECRET_KEY}`,
 
-      {
+        "content-type":
+          "application/x-www-form-urlencoded"
+      },
 
-        method:
-          "POST",
-
-        headers: {
-
-          authorization:
-            `Bearer ${env.STRIPE_SECRET_KEY}`,
-
-          "content-type":
-            "application/x-www-form-urlencoded"
-
-        },
-
-        body
-
-      }
-
-    );
+      body
+    }
+  );
 
   const text =
     await response.text();
@@ -154,53 +107,39 @@ async function stripeCheckout(
   let data;
 
   try {
-
     data =
-      JSON.parse(
-        text
-      );
-
+      JSON.parse(text);
   } catch {
-
     data = {};
-
   }
 
-  if (
-    !response.ok
-  ) {
-
+  if (!response.ok) {
     throw new Error(
-      data?.error?.message
-      ||
+      data?.error?.message ||
       text
     );
-
   }
 
   return data;
-
 }
 
 export async function onRequestPost({
   request,
   env
 }) {
-
   try {
-
     const body =
       await request.json();
 
     const teamKey =
-      body.teamKey
-      ||
-      "ecb-sunrise-black";
+      String(
+        body.teamKey ||
+        "ecb-sunrise-black"
+      ).trim();
 
     const playerKey =
       String(
-        body.playerKey
-        ||
+        body.playerKey ||
         ""
       ).trim();
 
@@ -213,37 +152,29 @@ export async function onRequestPost({
       anonymous
         ? "Anonymous"
         : String(
-            body.donorName
-            ||
+            body.donorName ||
             ""
           ).trim();
 
     const baseballNumbers =
-      [...new Set(
-        (
-          body.baseballs
-          ||
-          []
+      [
+        ...new Set(
+          (body.baseballs || [])
+            .map(Number)
         )
-        .map(Number)
-      )]
-      .filter(
-        n =>
-          Number.isInteger(n)
-          &&
-          n >= 1
-          &&
-          n <= 100
-      )
-      .sort(
-        (a,b) =>
-          a-b
-      );
+      ]
+        .filter(
+          number =>
+            Number.isInteger(number) &&
+            number >= 1 &&
+            number <= 100
+        )
+        .sort(
+          (a, b) =>
+            a - b
+        );
 
-    if (
-      !playerKey
-    ) {
-
+    if (!playerKey) {
       return json(
         {
           success: false,
@@ -252,13 +183,9 @@ export async function onRequestPost({
         },
         400
       );
-
     }
 
-    if (
-      !baseballNumbers.length
-    ) {
-
+    if (!baseballNumbers.length) {
       return json(
         {
           success: false,
@@ -267,15 +194,12 @@ export async function onRequestPost({
         },
         400
       );
-
     }
 
     if (
-      !anonymous
-      &&
+      !anonymous &&
       !donorName
     ) {
-
       return json(
         {
           success: false,
@@ -284,22 +208,15 @@ export async function onRequestPost({
         },
         400
       );
-
     }
 
     const teams =
       await supabaseRequest(
-
         env,
-
         `teams?team_key=eq.${encodeURIComponent(teamKey)}&select=id,team_name&limit=1`
-
       );
 
-    if (
-      !teams?.length
-    ) {
-
+    if (!teams?.length) {
       return json(
         {
           success: false,
@@ -308,7 +225,6 @@ export async function onRequestPost({
         },
         404
       );
-
     }
 
     const team =
@@ -316,17 +232,11 @@ export async function onRequestPost({
 
     const players =
       await supabaseRequest(
-
         env,
-
         `players?team_id=eq.${encodeURIComponent(team.id)}&player_key=eq.${encodeURIComponent(playerKey)}&select=id,player_name,player_number&limit=1`
-
       );
 
-    if (
-      !players?.length
-    ) {
-
+    if (!players?.length) {
       return json(
         {
           success: false,
@@ -335,7 +245,6 @@ export async function onRequestPost({
         },
         404
       );
-
     }
 
     const player =
@@ -343,106 +252,87 @@ export async function onRequestPost({
 
     const baseballs =
       await supabaseRequest(
-
         env,
-
-        `baseballs?team_id=eq.${encodeURIComponent(team.id)}&player_id=eq.${encodeURIComponent(player.id)}&ball_number=in.(${baseballNumbers.join(",")})&select=ball_number,status`
-
+        `baseballs?player_id=eq.${encodeURIComponent(player.id)}&ball_number=in.(${baseballNumbers.join(",")})&select=ball_number,amount_cents,status`
       );
 
     const baseballMap =
       new Map(
-
-        (
-          baseballs
-          ||
-          []
-        )
-        .map(
+        (baseballs || []).map(
           baseball => [
-
             Number(
               baseball.ball_number
             ),
-
             baseball
-
           ]
         )
-
       );
 
     const unavailable =
       baseballNumbers.filter(
         number => {
-
           const baseball =
             baseballMap.get(
               number
             );
 
           return (
-            !baseball
-            ||
-            baseball.status
-              !==
+            !baseball ||
+            baseball.status !==
               "available"
           );
-
         }
       );
 
-    if (
-      unavailable.length
-    ) {
-
+    if (unavailable.length) {
       return json(
         {
-
           success: false,
 
           error:
-            `These baseballs are no longer available: ${unavailable.map(n => `#${n}`).join(", ")}`
-
+            `These baseballs are no longer available: ${unavailable
+              .map(
+                number =>
+                  `#${number}`
+              )
+              .join(", ")}`
         },
         409
       );
-
     }
 
-    const donationAmount =
+    const donationDollars =
       baseballNumbers.reduce(
-        (
-          total,
-          number
-        ) =>
-          total
-          +
-          number,
+        (total, number) =>
+          total + number,
         0
       );
 
-    const amountCents =
-      donationAmount
-      *
-      100;
+    // Stripe requires USD amounts in cents.
+    const stripeAmount =
+      donationDollars * 100;
 
     const origin =
       new URL(
         request.url
       ).origin;
 
+    /*
+      IMPORTANT:
+      Customers now return to the ROOT page,
+      not /fundraiser.html.
+    */
+
     const successURL =
-      `${origin}/fundraiser.html?player=${encodeURIComponent(playerKey)}&payment=success&session_id={CHECKOUT_SESSION_ID}`;
+      `${origin}/?player=${encodeURIComponent(playerKey)}&payment=success&session_id={CHECKOUT_SESSION_ID}`;
 
     const cancelURL =
-      `${origin}/fundraiser.html?player=${encodeURIComponent(playerKey)}&payment=cancelled`;
+      `${origin}/?player=${encodeURIComponent(playerKey)}&payment=cancelled`;
 
     const session =
-      await stripeCheckout(
+      await createStripeSession(
         env,
         {
-
           mode:
             "payment",
 
@@ -456,10 +346,15 @@ export async function onRequestPost({
             `ECB Sunrise Black - ${player.player_name} #${player.player_number}`,
 
           "line_items[0][price_data][product_data][description]":
-            `Baseballs ${baseballNumbers.map(n => `#${n}`).join(", ")}`,
+            `Baseballs ${baseballNumbers
+              .map(
+                number =>
+                  `#${number}`
+              )
+              .join(", ")}`,
 
           "line_items[0][price_data][unit_amount]":
-            amountCents,
+            stripeAmount,
 
           "line_items[0][quantity]":
             1,
@@ -477,9 +372,7 @@ export async function onRequestPost({
             playerKey,
 
           "metadata[baseballs]":
-            baseballNumbers.join(
-              ","
-            ),
+            baseballNumbers.join(","),
 
           "metadata[donor_name]":
             donorName,
@@ -488,13 +381,10 @@ export async function onRequestPost({
             anonymous
               ? "true"
               : "false"
-
         }
-
       );
 
     return json({
-
       success: true,
 
       url:
@@ -502,31 +392,20 @@ export async function onRequestPost({
 
       sessionId:
         session.id
-
     });
 
-  } catch (
-    error
-  ) {
-
-    console.error(
-      error
-    );
+  } catch (error) {
+    console.error(error);
 
     return json(
       {
-
         success: false,
 
         error:
-          error.message
-          ||
+          error.message ||
           "Unable to create checkout."
-
       },
       500
     );
-
   }
-
 }
