@@ -8,66 +8,29 @@ function json(data, status = 200) {
   });
 }
 
-function hexToBytes(hex) {
-  if (
-    !/^[0-9a-f]+$/i.test(hex) ||
-    hex.length % 2 !== 0
-  ) {
-    return null;
-  }
-
-  const bytes =
-    new Uint8Array(hex.length / 2);
-
-  for (
-    let i = 0;
-    i < bytes.length;
-    i++
-  ) {
-    bytes[i] =
-      parseInt(
-        hex.slice(
-          i * 2,
-          i * 2 + 2
-        ),
-        16
-      );
-  }
-
-  return bytes;
-}
-
 async function verifyStripeSignature(
   payload,
   signatureHeader,
   secret
 ) {
-  if (
-    !payload ||
-    !signatureHeader ||
-    !secret
-  ) {
+  if (!payload || !signatureHeader || !secret) {
     return false;
   }
 
-  const parts =
-    signatureHeader.split(",");
+  const parts = signatureHeader.split(",");
 
   const timestampPart =
     parts.find(
-      part =>
-        part.startsWith("t=")
+      part => part.startsWith("t=")
     );
 
   const signatureParts =
     parts
       .filter(
-        part =>
-          part.startsWith("v1=")
+        part => part.startsWith("v1=")
       )
       .map(
-        part =>
-          part.slice(3)
+        part => part.slice(3)
       );
 
   if (
@@ -86,7 +49,7 @@ async function verifyStripeSignature(
   const encoder =
     new TextEncoder();
 
-  const cryptoKey =
+  const key =
     await crypto.subtle.importKey(
       "raw",
       encoder.encode(secret),
@@ -101,7 +64,7 @@ async function verifyStripeSignature(
   const signatureBuffer =
     await crypto.subtle.sign(
       "HMAC",
-      cryptoKey,
+      key,
       encoder.encode(
         signedPayload
       )
@@ -136,21 +99,16 @@ async function supabasePatch(
       `${env.SUPABASE_URL}/rest/v1/${path}`,
       {
         method: "PATCH",
-
         headers: {
           apikey:
             env.SUPABASE_SERVICE_ROLE_KEY,
-
           authorization:
             `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
-
           "content-type":
             "application/json",
-
           prefer:
             "return=representation",
         },
-
         body:
           JSON.stringify(body),
       }
@@ -190,12 +148,6 @@ export async function onRequestPost({
       );
     }
 
-    /*
-      IMPORTANT:
-      Stripe signature verification
-      must use the raw request body.
-    */
-
     const payload =
       await request.text();
 
@@ -225,11 +177,6 @@ export async function onRequestPost({
     const event =
       JSON.parse(payload);
 
-    /*
-      We only need completed
-      Checkout sessions.
-    */
-
     if (
       event.type !==
       "checkout.session.completed"
@@ -256,10 +203,6 @@ export async function onRequestPost({
       );
     }
 
-    /*
-      Ignore unpaid sessions.
-    */
-
     if (
       session.payment_status !==
       "paid"
@@ -275,12 +218,6 @@ export async function onRequestPost({
     const metadata =
       session.metadata || {};
 
-    /*
-      Protect the shared Supabase database.
-      Only process ECB Sunrise Black
-      transactions here.
-    */
-
     if (
       metadata.team_key !==
       "ecb-sunrise-black-cooperstown"
@@ -293,6 +230,47 @@ export async function onRequestPost({
       });
     }
 
+    const checkoutType =
+      String(
+        metadata.checkout_type ||
+        "baseballs"
+      ).trim();
+
+    const donorName =
+      String(
+        metadata.donor_name ||
+        "Anonymous"
+      ).trim() ||
+      "Anonymous";
+
+    /*
+      ========================================
+      GENERAL DONATION
+      ========================================
+    */
+
+    if (
+      checkoutType === "general"
+    ) {
+      return json({
+        success: true,
+        paid: true,
+        checkoutType:
+          "general",
+        teamKey:
+          metadata.team_key,
+        donorName,
+        stripeSessionId:
+          session.id,
+      });
+    }
+
+    /*
+      ========================================
+      BASEBALL PURCHASE
+      ========================================
+    */
+
     const playerId =
       String(
         metadata.player_id || ""
@@ -303,17 +281,9 @@ export async function onRequestPost({
         metadata.player_key || ""
       ).trim();
 
-    const donorName =
-      String(
-        metadata.donor_name ||
-        "Anonymous"
-      ).trim() ||
-      "Anonymous";
-
     const baseballNumbers =
       String(
-        metadata.baseball_numbers ||
-        ""
+        metadata.baseball_numbers || ""
       )
         .split(",")
         .map(
@@ -344,12 +314,6 @@ export async function onRequestPost({
       );
     }
 
-    /*
-      Mark each baseball sold.
-      We only update baseballs that are
-      still marked available.
-    */
-
     let updatedRows = 0;
 
     for (
@@ -369,7 +333,8 @@ export async function onRequestPost({
           env,
           path,
           {
-            status: "sold",
+            status:
+              "sold",
 
             donor_name:
               donorName,
@@ -393,21 +358,16 @@ export async function onRequestPost({
 
     return json({
       success: true,
-
       paid: true,
-
+      checkoutType:
+        "baseballs",
       teamKey:
         metadata.team_key,
-
       playerKey,
-
       baseballNumbers,
-
       donorName,
-
       stripeSessionId:
         session.id,
-
       updatedRows,
     });
 
@@ -420,7 +380,6 @@ export async function onRequestPost({
     return json(
       {
         success: false,
-
         error:
           error instanceof Error
             ? error.message
