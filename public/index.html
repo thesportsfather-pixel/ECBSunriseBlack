@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8" />
 
   <meta
@@ -14,1398 +16,1821 @@
 
   <meta
     name="description"
-    content="Support ECB Sunrise Black on their Road to Cooperstown. Choose a player and sponsor one or more baseballs."
+    content="Support ECB Sunrise Black on the Road to Cooperstown."
   />
 
   <style>
 
     :root {
-      --navy: #002855;
-      --navy-dark: #00152e;
-      --yellow: #ffe600;
-      --yellow-soft: #fff34d;
+
+      --bg: #050b16;
+      --bg2: #09162b;
+
+      --panel: #0a1930;
+      --panel2: #102746;
+
+      --navy: #062b54;
+      --blue: #0b4d85;
+
+      --yellow: #ffd520;
+      --yellow-light: #ffe76c;
+
       --white: #ffffff;
-      --muted: #aab6c5;
-      --card: #062f61;
+      --silver: #d9e0e9;
+      --muted: #9eacbd;
+
+      --danger: #ff6277;
+      --success: #35e59b;
+
+      --border:
+        rgba(
+          255,
+          213,
+          32,
+          0.42
+        );
+
     }
+
 
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+
+      box-sizing:
+        border-box;
+
     }
+
 
     html {
-      scroll-behavior: smooth;
+
+      scroll-behavior:
+        smooth;
+
     }
 
+
     body {
-      min-height: 100vh;
+
+      margin: 0;
+
+      min-height:
+        100vh;
 
       font-family:
+        Inter,
         Arial,
         Helvetica,
         sans-serif;
 
-      color: var(--white);
+      color:
+        var(--white);
 
       background:
+
         radial-gradient(
           circle at top,
-          #103e6d 0%,
-          var(--navy-dark) 45%,
-          #000814 100%
+          rgba(
+            255,
+            213,
+            32,
+            0.12
+          ),
+          transparent 34%
+        ),
+
+        radial-gradient(
+          circle at 82% 18%,
+          rgba(
+            21,
+            90,
+            145,
+            0.18
+          ),
+          transparent 30%
+        ),
+
+        linear-gradient(
+          180deg,
+          #071426 0%,
+          #030811 100%
         );
+
     }
 
+
     a {
-      color: inherit;
-      text-decoration: none;
+
+      color:
+        inherit;
+
+      text-decoration:
+        none;
+
     }
+
 
     button,
     input {
-      font: inherit;
+
+      font:
+        inherit;
+
     }
 
 
-    /* ================================
-       PAGE
-    ================================ */
+    button {
 
-    .page {
-      width: min(1180px, 94%);
-      margin: 0 auto;
-      padding:
-        30px
-        0
-        60px;
+      cursor:
+        pointer;
+
     }
 
 
-    /* ================================
-       HERO
-    ================================ */
-
-    .hero {
-      text-align: center;
-
-      padding:
-        25px
-        20px
-        42px;
-    }
-
-    .logo {
-      display: block;
+    .page-shell {
 
       width:
         min(
-          650px,
-          92vw
+          1180px,
+          94%
         );
-
-      max-height: 320px;
-
-      object-fit: contain;
 
       margin:
+        0 auto;
+
+      padding:
+        34px
         0
-        auto
-        18px;
+        80px;
+
     }
 
-    .team-label {
-      color: var(--yellow);
 
-      font-size: 15px;
-      font-weight: 900;
+    /* HERO */
 
-      letter-spacing: 4px;
-      text-transform: uppercase;
 
-      margin-bottom: 12px;
+    .hero {
+
+      text-align:
+        center;
+
+      margin-bottom:
+        34px;
+
     }
 
-    .hero h1 {
-      font-size:
-        clamp(
-          43px,
-          8vw,
-          92px
+
+    .team-logo {
+
+      display:
+        block;
+
+      width:
+        min(
+          420px,
+          85vw
         );
 
-      font-weight: 950;
+      max-height:
+        230px;
 
-      text-transform: uppercase;
+      object-fit:
+        contain;
 
-      line-height: 0.96;
+      margin:
+        0 auto 24px;
 
-      letter-spacing: -3px;
+      filter:
+        drop-shadow(
+          0 0 20px
+          rgba(
+            255,
+            213,
+            32,
+            0.22
+          )
+        );
+
     }
 
-    .hero h1 .road {
-      display: block;
 
-      color: var(--white);
+    .team-kicker {
 
-      font-size: 0.54em;
+      margin-bottom:
+        12px;
 
-      letter-spacing: 3px;
+      font-size:
+        13px;
 
-      margin-bottom: 8px;
+      font-weight:
+        900;
+
+      letter-spacing:
+        0.24em;
+
+      color:
+        var(--yellow);
+
+      text-transform:
+        uppercase;
+
     }
 
-    .hero h1 .coop {
-      display: block;
 
-      color: var(--yellow);
+    .hero-title {
+
+      margin:
+        0;
+
+      font-size:
+        clamp(
+          52px,
+          9vw,
+          108px
+        );
+
+      line-height:
+        0.82;
+
+      font-weight:
+        1000;
+
+      font-style:
+        italic;
+
+      letter-spacing:
+        -0.045em;
+
+      text-transform:
+        uppercase;
 
       text-shadow:
-        0 3px 0 #001327,
-        0 0 18px rgba(255,230,0,.22);
+
+        4px 4px 0
+        var(--navy),
+
+        7px 7px 0
+        rgba(
+          255,
+          213,
+          32,
+          0.22
+        );
+
     }
 
-    .hero-rule {
-      width: 120px;
-      height: 5px;
 
-      background: var(--yellow);
+    .hero-title .road {
 
-      border-radius: 999px;
+      display:
+        block;
+
+      color:
+        var(--white);
+
+    }
+
+
+    .hero-title .coop {
+
+      display:
+        block;
+
+      margin-top:
+        12px;
+
+      color:
+        var(--yellow);
+
+    }
+
+
+    .hero-subtitle {
+
+      width:
+        min(
+          760px,
+          95%
+        );
 
       margin:
-        26px
-        auto
-        22px;
-    }
+        30px auto 0;
 
-    .tagline {
-      font-size:
-        clamp(
-          18px,
-          3vw,
-          25px
-        );
-
-      font-weight: 900;
-
-      color: var(--white);
-
-      margin-bottom: 10px;
-    }
-
-    .intro {
-      width: min(760px, 100%);
-
-      margin: 0 auto;
-
-      color: #cbd4df;
+      color:
+        var(--silver);
 
       font-size:
-        clamp(
-          15px,
-          2.2vw,
-          18px
-        );
+        16px;
 
-      line-height: 1.65;
+      line-height:
+        1.65;
+
     }
 
 
-    /* ================================
-       PLAYER SECTION
-    ================================ */
+    /* CHOOSE PLAYER */
 
-    .players-section {
-      margin-top: 15px;
+
+    .choose-section {
+
+      margin-top:
+        45px;
+
     }
 
-    .section-kicker {
-      text-align: center;
 
-      color: var(--yellow);
+    .choose-title {
 
-      font-size: 13px;
-      font-weight: 900;
+      margin:
+        0;
 
-      letter-spacing: 3px;
-      text-transform: uppercase;
+      text-align:
+        center;
 
-      margin-bottom: 8px;
-    }
-
-    .section-title {
-      text-align: center;
+      color:
+        var(--white);
 
       font-size:
         clamp(
-          28px,
+          30px,
           5vw,
           48px
         );
 
-      font-weight: 950;
+      font-style:
+        italic;
 
-      text-transform: uppercase;
+      font-weight:
+        1000;
 
-      margin-bottom: 10px;
-    }
+      text-transform:
+        uppercase;
 
-    .section-subtitle {
-      text-align: center;
-
-      color: var(--muted);
-
-      margin-bottom: 28px;
-
-      font-size: 16px;
     }
 
 
-    /* ================================
-       PLAYER GRID
-    ================================ */
+    .choose-subtitle {
+
+      margin:
+        10px
+        0
+        26px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+      font-size:
+        14px;
+
+    }
+
 
     .player-grid {
-      display: grid;
+
+      display:
+        grid;
 
       grid-template-columns:
         repeat(
           3,
-          minmax(0, 1fr)
+          minmax(
+            0,
+            1fr
+          )
         );
 
-      gap: 16px;
+      gap:
+        16px;
+
     }
+
 
     .player-card {
-      position: relative;
 
-      min-height: 145px;
+      min-height:
+        104px;
 
-      display: flex;
-      align-items: center;
+      display:
+        flex;
 
-      gap: 18px;
+      align-items:
+        center;
 
-      padding: 20px;
-
-      border:
-        2px solid
-        rgba(255,230,0,.22);
-
-      border-radius: 18px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(7,57,109,.96),
-          rgba(1,25,53,.96)
-        );
-
-      box-shadow:
-        0 14px 30px
-        rgba(0,0,0,.22);
-
-      overflow: hidden;
-
-      transition:
-        transform .18s ease,
-        border-color .18s ease,
-        box-shadow .18s ease;
-    }
-
-    .player-card::before {
-      content: "";
-
-      position: absolute;
-
-      left: 0;
-      top: 0;
-      bottom: 0;
-
-      width: 6px;
-
-      background: var(--yellow);
-    }
-
-    .player-card:hover {
-      transform:
-        translateY(-4px);
-
-      border-color:
-        rgba(255,230,0,.82);
-
-      box-shadow:
-        0 18px 36px
-        rgba(0,0,0,.34);
-    }
-
-    .player-number {
-      flex:
-        0 0 65px;
-
-      width: 65px;
-      height: 65px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 50%;
-
-      background: var(--yellow);
-
-      color: var(--navy-dark);
-
-      font-size: 23px;
-      font-weight: 950;
-
-      box-shadow:
-        0 0 0 5px
-        rgba(255,230,0,.10);
-    }
-
-    .player-info {
-      min-width: 0;
-    }
-
-    .player-name {
-      display: block;
-
-      font-size: 19px;
-      font-weight: 900;
-
-      line-height: 1.15;
-
-      margin-bottom: 9px;
-    }
-
-    .support {
-      display: inline-block;
-
-      color: var(--yellow);
-
-      font-size: 12px;
-      font-weight: 900;
-
-      text-transform: uppercase;
-
-      letter-spacing: 1.1px;
-    }
-
-
-    /* ================================
-       GENERAL DONATION
-    ================================ */
-
-    .general {
-      margin-top: 38px;
+      gap:
+        16px;
 
       padding:
-        34px
-        24px;
-
-      text-align: center;
-
-      border-radius: 22px;
-
-      border:
-        2px solid
-        rgba(255,230,0,.35);
-
-      background:
-        linear-gradient(
-          150deg,
-          rgba(255,230,0,.08),
-          rgba(4,38,76,.88)
-        );
-    }
-
-    .general-label {
-      color: var(--yellow);
-
-      font-size: 13px;
-      font-weight: 900;
-
-      letter-spacing: 3px;
-
-      text-transform: uppercase;
-
-      margin-bottom: 8px;
-    }
-
-    .general h2 {
-      font-size:
-        clamp(
-          28px,
-          5vw,
-          43px
-        );
-
-      font-weight: 950;
-
-      text-transform: uppercase;
-
-      margin-bottom: 12px;
-    }
-
-    .general p {
-      color: #c5cfdb;
-
-      line-height: 1.6;
-
-      max-width: 670px;
-
-      margin:
-        0
-        auto
-        20px;
-    }
-
-    .general-button {
-      display: inline-flex;
-
-      align-items: center;
-      justify-content: center;
-
-      min-height: 55px;
-
-      padding:
-        0
-        30px;
-
-      border: none;
-      border-radius: 999px;
-
-      background: var(--yellow);
-
-      color: var(--navy-dark);
-
-      font-size: 15px;
-      font-weight: 950;
-
-      text-transform: uppercase;
-
-      letter-spacing: 1px;
-
-      cursor: pointer;
-
-      transition:
-        transform .15s ease,
-        background .15s ease;
-    }
-
-    .general-button:hover {
-      transform: scale(1.03);
-
-      background:
-        var(--yellow-soft);
-    }
-
-
-    /* ================================
-       DONATION MODAL
-    ================================ */
-
-    .overlay {
-      position: fixed;
-
-      inset: 0;
-
-      display: none;
-
-      align-items: center;
-      justify-content: center;
-
-      z-index: 1000;
-
-      padding: 20px;
-
-      background:
-        rgba(0,8,20,.86);
-
-      backdrop-filter: blur(8px);
-    }
-
-    .overlay.open {
-      display: flex;
-    }
-
-    .modal {
-      width: min(470px, 100%);
-
-      padding: 30px;
-
-      border-radius: 22px;
-
-      border:
-        2px solid
-        rgba(255,230,0,.4);
-
-      background: #041f40;
-
-      box-shadow:
-        0 30px 80px
-        rgba(0,0,0,.6);
-    }
-
-    .modal h3 {
-      color: var(--yellow);
-
-      font-size: 27px;
-
-      margin-bottom: 8px;
-    }
-
-    .modal-description {
-      color: #bdc9d7;
-
-      font-size: 14px;
-      line-height: 1.55;
-
-      margin-bottom: 22px;
-    }
-
-    .field {
-      margin-bottom: 17px;
-    }
-
-    .field label {
-      display: block;
-
-      margin-bottom: 7px;
-
-      color: #dce5ef;
-
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .field input {
-      width: 100%;
-      height: 52px;
-
-      padding:
-        0
-        14px;
+        18px;
 
       border:
         1px solid
-        rgba(255,255,255,.18);
+        var(--border);
 
-      border-radius: 11px;
+      border-radius:
+        16px;
 
-      outline: none;
+      background:
 
-      background: #001a35;
+        linear-gradient(
+          145deg,
+          rgba(
+            16,
+            39,
+            70,
+            0.97
+          ),
+          rgba(
+            5,
+            18,
+            37,
+            0.98
+          )
+        );
 
-      color: white;
+      box-shadow:
+        0 12px 30px
+        rgba(
+          0,
+          0,
+          0,
+          0.28
+        );
 
-      font-size: 16px;
+      transition:
+        0.16s ease;
+
     }
 
-    .field input:focus {
+
+    .player-card:hover {
+
+      transform:
+        translateY(
+          -3px
+        );
+
       border-color:
         var(--yellow);
+
+      box-shadow:
+        0 16px 34px
+        rgba(
+          0,
+          0,
+          0,
+          0.35
+        );
+
     }
 
-    .anonymous-row {
-      display: flex;
-      align-items: center;
 
-      gap: 10px;
+    .number {
 
-      margin-bottom: 22px;
+      flex:
+        0 0 58px;
 
-      color: #d7e0ea;
+      width:
+        58px;
 
-      font-size: 14px;
+      height:
+        58px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        50%;
+
+      background:
+        var(--yellow);
+
+      color:
+        #051225;
+
+      font-size:
+        21px;
+
+      font-weight:
+        1000;
+
+      box-shadow:
+        0 4px 16px
+        rgba(
+          255,
+          213,
+          32,
+          0.2
+        );
+
     }
 
-    .anonymous-row input {
-      width: 19px;
-      height: 19px;
+
+    .player-info {
+
+      min-width:
+        0;
+
+    }
+
+
+    .player-name {
+
+      display:
+        block;
+
+      color:
+        white;
+
+      font-size:
+        18px;
+
+      font-weight:
+        900;
+
+    }
+
+
+    .support-text {
+
+      display:
+        block;
+
+      margin-top:
+        7px;
+
+      color:
+        var(--yellow);
+
+      font-size:
+        11px;
+
+      font-weight:
+        900;
+
+      letter-spacing:
+        0.08em;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    .arrow {
+
+      margin-left:
+        auto;
+
+      padding-left:
+        10px;
+
+      color:
+        var(--yellow);
+
+      font-size:
+        25px;
+
+      font-weight:
+        900;
+
+    }
+
+
+    /* GENERAL DONATION */
+
+
+    .general-donation {
+
+      margin-top:
+        50px;
+
+      padding:
+        34px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        22px;
+
+      background:
+
+        radial-gradient(
+          circle at top,
+          rgba(
+            255,
+            213,
+            32,
+            0.08
+          ),
+          transparent 55%
+        ),
+
+        linear-gradient(
+          145deg,
+          rgba(
+            13,
+            39,
+            73,
+            0.96
+          ),
+          rgba(
+            4,
+            16,
+            33,
+            0.98
+          )
+        );
+
+      box-shadow:
+        0 18px 50px
+        rgba(
+          0,
+          0,
+          0,
+          0.28
+        );
+
+    }
+
+
+    .general-kicker {
+
+      text-align:
+        center;
+
+      color:
+        var(--yellow);
+
+      font-size:
+        12px;
+
+      font-weight:
+        900;
+
+      letter-spacing:
+        0.18em;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    .general-title {
+
+      margin:
+        8px
+        0
+        10px;
+
+      text-align:
+        center;
+
+      color:
+        white;
+
+      font-size:
+        clamp(
+          30px,
+          5vw,
+          44px
+        );
+
+      font-style:
+        italic;
+
+      font-weight:
+        1000;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    .general-description {
+
+      max-width:
+        690px;
+
+      margin:
+        0 auto 25px;
+
+      text-align:
+        center;
+
+      color:
+        var(--silver);
+
+      line-height:
+        1.6;
+
+    }
+
+
+    .general-form {
+
+      width:
+        min(
+          620px,
+          100%
+        );
+
+      margin:
+        0 auto;
+
+    }
+
+
+    .general-field {
+
+      margin-bottom:
+        16px;
+
+    }
+
+
+    .general-field label {
+
+      display:
+        block;
+
+      margin-bottom:
+        8px;
+
+      color:
+        var(--yellow);
+
+      font-size:
+        12px;
+
+      font-weight:
+        900;
+
+      letter-spacing:
+        0.08em;
+
+      text-transform:
+        uppercase;
+
+    }
+
+
+    .general-field input {
+
+      width:
+        100%;
+
+      min-height:
+        51px;
+
+      padding:
+        13px 15px;
+
+      border:
+        1px solid
+        rgba(
+          255,
+          255,
+          255,
+          0.18
+        );
+
+      border-radius:
+        11px;
+
+      outline:
+        none;
+
+      background:
+        #06162a;
+
+      color:
+        white;
+
+      font-size:
+        16px;
+
+    }
+
+
+    .general-field input:focus {
+
+      border-color:
+        var(--yellow);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(
+          255,
+          213,
+          32,
+          0.08
+        );
+
+    }
+
+
+    .amount-wrap {
+
+      position:
+        relative;
+
+    }
+
+
+    .amount-symbol {
+
+      position:
+        absolute;
+
+      left:
+        15px;
+
+      top:
+        50%;
+
+      transform:
+        translateY(
+          -50%
+        );
+
+      color:
+        var(--yellow);
+
+      font-size:
+        19px;
+
+      font-weight:
+        900;
+
+    }
+
+
+    .amount-wrap input {
+
+      padding-left:
+        35px;
+
+    }
+
+
+    .anonymous-option {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+
+      margin:
+        8px 0 20px;
+
+      color:
+        var(--silver);
+
+      font-size:
+        14px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .anonymous-option input {
+
+      width:
+        18px;
+
+      height:
+        18px;
 
       accent-color:
         var(--yellow);
-    }
 
-    .modal-actions {
-      display: flex;
-
-      gap: 10px;
-    }
-
-    .modal-actions button {
-      flex: 1;
-
-      min-height: 50px;
-
-      border-radius: 11px;
-
-      border: none;
-
-      font-weight: 900;
-
-      cursor: pointer;
-    }
-
-    .cancel-button {
-      background: #143a62;
-      color: white;
-    }
-
-    .donate-button {
-      background: var(--yellow);
-      color: var(--navy-dark);
-    }
-
-    .error-message {
-      display: none;
-
-      margin-top: 14px;
-
-      color: #ff9d9d;
-
-      font-size: 13px;
-      line-height: 1.4;
     }
 
 
-    /* ================================
-       FOOTER
-    ================================ */
+    .general-button {
+
+      width:
+        100%;
+
+      min-height:
+        52px;
+
+      border:
+        0;
+
+      border-radius:
+        999px;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--yellow),
+          var(--yellow-light)
+        );
+
+      color:
+        #061225;
+
+      font-size:
+        15px;
+
+      font-weight:
+        1000;
+
+      text-transform:
+        uppercase;
+
+      cursor:
+        pointer;
+
+    }
+
+
+    .general-button:hover {
+
+      transform:
+        translateY(
+          -1px
+        );
+
+    }
+
+
+    .general-button:disabled {
+
+      opacity:
+        0.5;
+
+      cursor:
+        not-allowed;
+
+    }
+
+
+    .general-note {
+
+      margin:
+        16px
+        0
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.5;
+
+      text-align:
+        center;
+
+    }
+
+
+    .general-status {
+
+      display:
+        none;
+
+      margin-top:
+        15px;
+
+      padding:
+        12px 14px;
+
+      border-radius:
+        10px;
+
+      text-align:
+        center;
+
+      font-size:
+        14px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .general-status.error {
+
+      display:
+        block;
+
+      color:
+        #ffb5b8;
+
+      border:
+        1px solid
+        rgba(
+          255,
+          80,
+          90,
+          0.45
+        );
+
+      background:
+        rgba(
+          255,
+          80,
+          90,
+          0.1
+        );
+
+    }
+
+
+    .general-status.success {
+
+      display:
+        block;
+
+      color:
+        #a7f3c0;
+
+      border:
+        1px solid
+        rgba(
+          34,
+          197,
+          94,
+          0.4
+        );
+
+      background:
+        rgba(
+          34,
+          197,
+          94,
+          0.1
+        );
+
+    }
+
 
     .footer {
-      text-align: center;
 
-      margin-top: 45px;
+      margin-top:
+        48px;
 
-      color: #718399;
+      text-align:
+        center;
 
-      font-size: 12px;
-      line-height: 1.7;
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      line-height:
+        1.7;
+
     }
+
 
     .footer strong {
-      color: var(--yellow);
+
+      color:
+        white;
+
     }
 
 
-    /* ================================
-       RESPONSIVE
-    ================================ */
-
-    @media (max-width: 850px) {
+    @media (
+      max-width:
+      800px
+    ) {
 
       .player-grid {
+
         grid-template-columns:
           repeat(
             2,
-            minmax(0, 1fr)
+            minmax(
+              0,
+              1fr
+            )
           );
+
       }
 
     }
 
-    @media (max-width: 560px) {
 
-      .page {
-        width: 94%;
-        padding-top: 16px;
+    @media (
+      max-width:
+      560px
+    ) {
+
+      .page-shell {
+
+        width:
+          94%;
+
+        padding-top:
+          20px;
+
       }
 
-      .hero {
-        padding:
-          10px
-          10px
-          32px;
+
+      .team-logo {
+
+        width:
+          min(
+            340px,
+            82vw
+          );
+
       }
 
-      .logo {
-        width: 94vw;
-      }
 
       .player-grid {
-        grid-template-columns: 1fr;
 
-        gap: 12px;
+        grid-template-columns:
+          1fr;
+
+        gap:
+          12px;
+
       }
+
 
       .player-card {
-        min-height: 105px;
+
+        min-height:
+          90px;
+
       }
 
-      .player-number {
-        width: 58px;
-        height: 58px;
 
-        flex-basis: 58px;
+      .number {
 
-        font-size: 20px;
+        width:
+          56px;
+
+        height:
+          56px;
+
+        font-size:
+          21px;
+
       }
 
-      .modal {
-        padding: 24px 19px;
+
+      .player-name {
+
+        font-size:
+          17px;
+
+      }
+
+
+      .general-donation {
+
+        margin-top:
+          40px;
+
+        padding:
+          25px
+          17px;
+
+        border-radius:
+          18px;
+
+      }
+
+
+      .general-title {
+
+        font-size:
+          27px;
+
+      }
+
+
+      .general-description {
+
+        font-size:
+          14px;
+
       }
 
     }
 
   </style>
+
 </head>
 
 
 <body>
 
-  <main class="page">
 
+<main class="page-shell">
 
-    <!-- ===============================
-         HERO
-    ================================ -->
 
-    <section class="hero">
+  <!-- HERO -->
 
-      <img
-        src="/ecb-sunrise-black-logo.png"
-        alt="ECB Sunrise Black"
-        class="logo"
-      />
+  <section class="hero">
 
-      <div class="team-label">
-        ECB Sunrise Black Baseball
-      </div>
+    <img
+      src="/ecb-sunrise-black-logo.png"
+      alt="ECB Sunrise Black"
+      class="team-logo"
+    />
 
-      <h1>
 
-        <span class="road">
-          Road to
-        </span>
+    <div class="team-kicker">
+      ECB SUNRISE BLACK BASEBALL
+    </div>
 
-        <span class="coop">
-          Cooperstown
-        </span>
 
-      </h1>
+    <h1 class="hero-title">
 
-      <div class="hero-rule"></div>
+      <span class="road">
+        Road to
+      </span>
 
-      <p class="tagline">
-        One Team. One Goal. One Dream.
-      </p>
+      <span class="coop">
+        Cooperstown
+      </span>
 
-      <p class="intro">
-        Help support ECB Sunrise Black on their Road to
-        Cooperstown. Choose a player below and sponsor one
-        or more baseballs from their individual 100-baseball
-        fundraiser board.
-      </p>
+    </h1>
 
-    </section>
 
+    <p class="hero-subtitle">
 
-    <!-- ===============================
-         PLAYERS
-    ================================ -->
+      Help ECB Sunrise Black make the Cooperstown dream
+      a reality. Choose the player you would like to
+      support and sponsor one or more baseballs.
 
-    <section class="players-section">
+    </p>
 
-      <div class="section-kicker">
-        ECB Sunrise Black Fundraiser
-      </div>
+  </section>
 
-      <h2 class="section-title">
-        Choose a Player to Support
-      </h2>
 
-      <p class="section-subtitle">
-        Select a player to open their individual fundraiser board.
-      </p>
 
+  <!-- PLAYER LIST -->
 
-      <div class="player-grid">
+  <section class="choose-section">
 
+    <h2 class="choose-title">
+      Choose Your Player
+    </h2>
 
-        <!-- #1 -->
+    <p class="choose-subtitle">
+      Select a player below to visit their fundraiser.
+    </p>
 
-        <a
-          class="player-card"
-          href="/fundraiser?player=anthony-c"
-        >
 
-          <div class="player-number">
-            #1
-          </div>
+    <div class="player-grid">
 
-          <div class="player-info">
 
-            <span class="player-name">
-              Anthony C
-            </span>
-
-            <span class="support">
-              Support Anthony →
-            </span>
-
-          </div>
-
-        </a>
-
-
-        <!-- #2 -->
-
-        <a
-          class="player-card"
-          href="/fundraiser?player=jack-j"
-        >
-
-          <div class="player-number">
-            #2
-          </div>
-
-          <div class="player-info">
-
-            <span class="player-name">
-              Jack J
-            </span>
-
-            <span class="support">
-              Support Jack →
-            </span>
-
-          </div>
-
-        </a>
-
-
-        <!-- #7 -->
-
-        <a
-          class="player-card"
-          href="/fundraiser?player=ezra-f"
-        >
-
-          <div class="player-number">
-            #7
-          </div>
-
-          <div class="player-info">
-
-            <span class="player-name">
-              Ezra F
-            </span>
-
-            <span class="support">
-              Support Ezra →
-            </span>
-
-          </div>
-
-        </a>
-
-
-        <!-- #11 -->
-
-        <a
-          class="player-card"
-          href="/fundraiser?player=zachary-z"
-        >
-
-          <div class="player-number">
-            #11
-          </div>
-
-          <div class="player-info">
-
-            <span class="player-name">
-              Zachary Z
-            </span>
-
-            <span class="support">
-              Support Zachary →
-            </span>
-
-          </div>
-
-        </a>
-
-
-        <!-- #12 -->
-
-        <a
-          class="player-card"
-          href="/fundraiser?player=harrison-z"
-        >
-
-          <div class="player-number">
-            #12
-          </div>
-
-          <div class="player-info">
-
-            <span class="player-name">
-              Harrison Z
-            </span>
-
-            <span class="support">
-              Support Harrison →
-            </span>
-
-          </div>
-
-        </a>
-
-
-        <!-- #15 -->
-
-        <a
-          class="player-card"
-          href="/fundraiser?player=nicolas-h"
-        >
-
-          <div class="player-number">
-            #15
-          </div>
-
-          <div class="player-info">
-
-            <span class="player-name">
-              Nicolas H
-            </span>
-
-            <span class="support">
-              Support Nicolas →
-            </span>
-
-          </div>
-
-        </a>
-
-
-        <!-- #16 -->
-
-        <a
-          class="player-card"
-          href="/fundraiser?player=andrew-p"
-        >
-
-          <div class="player-number">
-            #16
-          </div>
-
-          <div class="player-info">
-
-            <span class="player-name">
-              Andrew P
-            </span>
-
-            <span class="support">
-              Support Andrew →
-            </span>
-
-          </div>
-
-        </a>
-
-
-        <!-- #20 -->
-
-        <a
-          class="player-card"
-          href="/fundraiser?player=dylan-n"
-        >
-
-          <div class="player-number">
-            #20
-          </div>
-
-          <div class="player-info">
-
-            <span class="player-name">
-              Dylan N
-            </span>
-
-            <span class="support">
-              Support Dylan →
-            </span>
-
-          </div>
-
-        </a>
-
-
-        <!-- #27 -->
-
-        <a
-          class="player-card"
-          href="/fundraiser?player=julian-s"
-        >
-
-          <div class="player-number">
-            #27
-          </div>
-
-          <div class="player-info">
-
-            <span class="player-name">
-              Julian S
-            </span>
-
-            <span class="support">
-              Support Julian →
-            </span>
-
-          </div>
-
-        </a>
-
-
-        <!-- #28 -->
-
-        <a
-          class="player-card"
-          href="/fundraiser?player=eli-o"
-        >
-
-          <div class="player-number">
-            #28
-          </div>
-
-          <div class="player-info">
-
-            <span class="player-name">
-              Eli O
-            </span>
-
-            <span class="support">
-              Support Eli →
-            </span>
-
-          </div>
-
-        </a>
-
-
-        <!-- #44 -->
-
-        <a
-          class="player-card"
-          href="/fundraiser?player=jase-h"
-        >
-
-          <div class="player-number">
-            #44
-          </div>
-
-          <div class="player-info">
-
-            <span class="player-name">
-              Jase H
-            </span>
-
-            <span class="support">
-              Support Jase →
-            </span>
-
-          </div>
-
-        </a>
-
-
-      </div>
-
-    </section>
-
-
-    <!-- ===============================
-         GENERAL DONATION
-    ================================ -->
-
-    <section class="general">
-
-      <div class="general-label">
-        Support the Entire Team
-      </div>
-
-      <h2>
-        General Team Donation
-      </h2>
-
-      <p>
-        Prefer to make a direct contribution instead of
-        selecting a baseball? Make a general donation to
-        support ECB Sunrise Black's Cooperstown journey.
-      </p>
-
-      <button
-        class="general-button"
-        id="openDonation"
-        type="button"
+      <a
+        class="player-card"
+        href="/fundraiser.html?player=anthony-c"
       >
-        Make a Donation
-      </button>
 
-    </section>
+        <span class="number">
+          #1
+        </span>
 
+        <span class="player-info">
 
-    <!-- ===============================
-         FOOTER
-    ================================ -->
+          <span class="player-name">
+            Anthony C
+          </span>
 
-    <footer class="footer">
+          <span class="support-text">
+            Support Anthony
+          </span>
 
-      <strong>
-        ECB Sunrise Black
-      </strong>
+        </span>
 
-      <br />
+        <span class="arrow">
+          ›
+        </span>
 
-      Road to Cooperstown
-
-    </footer>
-
-  </main>
-
-
-  <!-- ===============================
-       GENERAL DONATION MODAL
-  ================================ -->
-
-  <div
-    class="overlay"
-    id="donationOverlay"
-  >
-
-    <div class="modal">
-
-      <h3>
-        General Donation
-      </h3>
-
-      <p class="modal-description">
-        Enter the amount you would like to contribute.
-        You will be redirected to Stripe to complete
-        your secure payment.
-      </p>
+      </a>
 
 
-      <div class="field">
 
-        <label for="donationAmount">
+      <a
+        class="player-card"
+        href="/fundraiser.html?player=jack-j"
+      >
+
+        <span class="number">
+          #2
+        </span>
+
+        <span class="player-info">
+
+          <span class="player-name">
+            Jack J
+          </span>
+
+          <span class="support-text">
+            Support Jack
+          </span>
+
+        </span>
+
+        <span class="arrow">
+          ›
+        </span>
+
+      </a>
+
+
+
+      <a
+        class="player-card"
+        href="/fundraiser.html?player=ezra-f"
+      >
+
+        <span class="number">
+          #7
+        </span>
+
+        <span class="player-info">
+
+          <span class="player-name">
+            Ezra F
+          </span>
+
+          <span class="support-text">
+            Support Ezra
+          </span>
+
+        </span>
+
+        <span class="arrow">
+          ›
+        </span>
+
+      </a>
+
+
+
+      <a
+        class="player-card"
+        href="/fundraiser.html?player=zachary-z"
+      >
+
+        <span class="number">
+          #11
+        </span>
+
+        <span class="player-info">
+
+          <span class="player-name">
+            Zachary Z
+          </span>
+
+          <span class="support-text">
+            Support Zachary
+          </span>
+
+        </span>
+
+        <span class="arrow">
+          ›
+        </span>
+
+      </a>
+
+
+
+      <a
+        class="player-card"
+        href="/fundraiser.html?player=harrison-z"
+      >
+
+        <span class="number">
+          #12
+        </span>
+
+        <span class="player-info">
+
+          <span class="player-name">
+            Harrison Z
+          </span>
+
+          <span class="support-text">
+            Support Harrison
+          </span>
+
+        </span>
+
+        <span class="arrow">
+          ›
+        </span>
+
+      </a>
+
+
+
+      <a
+        class="player-card"
+        href="/fundraiser.html?player=nicolas-h"
+      >
+
+        <span class="number">
+          #15
+        </span>
+
+        <span class="player-info">
+
+          <span class="player-name">
+            Nicolas H
+          </span>
+
+          <span class="support-text">
+            Support Nicolas
+          </span>
+
+        </span>
+
+        <span class="arrow">
+          ›
+        </span>
+
+      </a>
+
+
+
+      <a
+        class="player-card"
+        href="/fundraiser.html?player=andrew-p"
+      >
+
+        <span class="number">
+          #16
+        </span>
+
+        <span class="player-info">
+
+          <span class="player-name">
+            Andrew P
+          </span>
+
+          <span class="support-text">
+            Support Andrew
+          </span>
+
+        </span>
+
+        <span class="arrow">
+          ›
+        </span>
+
+      </a>
+
+
+
+      <a
+        class="player-card"
+        href="/fundraiser.html?player=dylan-n"
+      >
+
+        <span class="number">
+          #20
+        </span>
+
+        <span class="player-info">
+
+          <span class="player-name">
+            Dylan N
+          </span>
+
+          <span class="support-text">
+            Support Dylan
+          </span>
+
+        </span>
+
+        <span class="arrow">
+          ›
+        </span>
+
+      </a>
+
+
+
+      <a
+        class="player-card"
+        href="/fundraiser.html?player=julian-s"
+      >
+
+        <span class="number">
+          #27
+        </span>
+
+        <span class="player-info">
+
+          <span class="player-name">
+            Julian S
+          </span>
+
+          <span class="support-text">
+            Support Julian
+          </span>
+
+        </span>
+
+        <span class="arrow">
+          ›
+        </span>
+
+      </a>
+
+
+
+      <a
+        class="player-card"
+        href="/fundraiser.html?player=eli-o"
+      >
+
+        <span class="number">
+          #28
+        </span>
+
+        <span class="player-info">
+
+          <span class="player-name">
+            Eli O
+          </span>
+
+          <span class="support-text">
+            Support Eli
+          </span>
+
+        </span>
+
+        <span class="arrow">
+          ›
+        </span>
+
+      </a>
+
+
+
+      <a
+        class="player-card"
+        href="/fundraiser.html?player=jase-h"
+      >
+
+        <span class="number">
+          #44
+        </span>
+
+        <span class="player-info">
+
+          <span class="player-name">
+            Jase H
+          </span>
+
+          <span class="support-text">
+            Support Jase
+          </span>
+
+        </span>
+
+        <span class="arrow">
+          ›
+        </span>
+
+      </a>
+
+
+    </div>
+
+  </section>
+
+
+
+  <!-- GENERAL TEAM DONATION -->
+
+  <section class="general-donation">
+
+    <div class="general-kicker">
+      Support the Entire Team
+    </div>
+
+
+    <h2 class="general-title">
+      General Team Donation
+    </h2>
+
+
+    <p class="general-description">
+
+      Want to support ECB Sunrise Black without selecting
+      a player or purchasing a baseball? Enter any custom
+      donation amount below.
+
+    </p>
+
+
+    <div class="general-form">
+
+
+      <div class="general-field">
+
+        <label
+          for="generalDonationAmount"
+        >
           Donation Amount
         </label>
 
-        <input
-          id="donationAmount"
-          type="number"
-          inputmode="decimal"
-          min="1"
-          step="1"
-          placeholder="$ Amount"
-        />
+
+        <div class="amount-wrap">
+
+          <span class="amount-symbol">
+            $
+          </span>
+
+          <input
+            id="generalDonationAmount"
+            type="number"
+            min="1"
+            step="0.01"
+            inputmode="decimal"
+            placeholder="100.00"
+          />
+
+        </div>
 
       </div>
 
 
-      <div class="field">
 
-        <label for="donorName">
+      <div class="general-field">
+
+        <label
+          for="generalDonorName"
+        >
           Donor Name
         </label>
 
         <input
-          id="donorName"
+          id="generalDonorName"
           type="text"
-          maxlength="100"
-          placeholder="Your name"
+          maxlength="50"
+          autocomplete="name"
+          placeholder="Example: The Smith Family"
         />
 
       </div>
 
 
-      <label class="anonymous-row">
+
+      <label class="anonymous-option">
 
         <input
+          id="generalAnonymous"
           type="checkbox"
-          id="anonymous"
         />
 
-        Donate anonymously
+        <span>
+          Remain Anonymous
+        </span>
 
       </label>
 
 
-      <div class="modal-actions">
 
-        <button
-          type="button"
-          class="cancel-button"
-          id="cancelDonation"
-        >
-          Cancel
-        </button>
-
-        <button
-          type="button"
-          class="donate-button"
-          id="submitDonation"
-        >
-          Continue to Payment
-        </button>
-
-      </div>
+      <button
+        id="generalDonateButton"
+        class="general-button"
+        type="button"
+      >
+        Donate to ECB Sunrise Black
+      </button>
 
 
       <div
-        class="error-message"
-        id="donationError"
+        id="generalStatus"
+        class="general-status"
       ></div>
+
+
+      <p class="general-note">
+
+        General donations support ECB Sunrise Black directly
+        and do not purchase or reserve a baseball.
+
+      </p>
+
 
     </div>
 
-  </div>
+  </section>
+
+
+
+  <footer class="footer">
+
+    <strong>
+      ECB SUNRISE BLACK
+    </strong>
+
+    <br />
+
+    Road to Cooperstown
+
+  </footer>
+
 
 
   <script>
 
-    const overlay =
+    const generalDonationAmount =
       document.getElementById(
-        "donationOverlay"
+        "generalDonationAmount"
       );
 
-    const openButton =
+    const generalDonorName =
       document.getElementById(
-        "openDonation"
+        "generalDonorName"
       );
 
-    const cancelButton =
+    const generalAnonymous =
       document.getElementById(
-        "cancelDonation"
+        "generalAnonymous"
       );
 
-    const submitButton =
+    const generalDonateButton =
       document.getElementById(
-        "submitDonation"
+        "generalDonateButton"
       );
 
-    const amountInput =
+    const generalStatus =
       document.getElementById(
-        "donationAmount"
-      );
-
-    const donorNameInput =
-      document.getElementById(
-        "donorName"
-      );
-
-    const anonymousInput =
-      document.getElementById(
-        "anonymous"
-      );
-
-    const errorBox =
-      document.getElementById(
-        "donationError"
+        "generalStatus"
       );
 
 
-    function showError(message) {
+    function showGeneralStatus(
+      message,
+      type
+    ) {
 
-      errorBox.textContent =
+      generalStatus.textContent =
         message;
 
-      errorBox.style.display =
-        "block";
+      generalStatus.className =
+        "general-status " +
+        type;
 
     }
 
 
-    function clearError() {
-
-      errorBox.textContent = "";
-
-      errorBox.style.display =
-        "none";
-
-    }
-
-
-    function openDonation() {
-
-      clearError();
-
-      overlay.classList.add(
-        "open"
-      );
-
-      setTimeout(
-        () => amountInput.focus(),
-        50
-      );
-
-    }
-
-
-    function closeDonation() {
-
-      overlay.classList.remove(
-        "open"
-      );
-
-      clearError();
-
-    }
-
-
-    openButton.addEventListener(
-      "click",
-      openDonation
-    );
-
-
-    cancelButton.addEventListener(
-      "click",
-      closeDonation
-    );
-
-
-    overlay.addEventListener(
-      "click",
-      event => {
-
-        if (
-          event.target === overlay
-        ) {
-
-          closeDonation();
-
-        }
-
-      }
-    );
-
-
-    anonymousInput.addEventListener(
+    generalAnonymous.addEventListener(
       "change",
       () => {
 
         if (
-          anonymousInput.checked
+          generalAnonymous.checked
         ) {
 
-          donorNameInput.value =
+          generalDonorName.value =
             "";
 
-          donorNameInput.disabled =
+          generalDonorName.disabled =
             true;
 
-        }
-        else {
+          generalDonorName.placeholder =
+            "Anonymous donation";
 
-          donorNameInput.disabled =
+        } else {
+
+          generalDonorName.disabled =
             false;
+
+          generalDonorName.placeholder =
+            "Example: The Smith Family";
 
         }
 
@@ -1413,84 +1838,118 @@
     );
 
 
-    submitButton.addEventListener(
+    generalDonateButton.addEventListener(
       "click",
       async () => {
 
-        clearError();
-
-
         const amount =
           Number(
-            amountInput.value
+            generalDonationAmount.value
           );
 
 
-        const anonymous =
-          anonymousInput.checked;
-
-
-        const donorName =
-          anonymous
-            ? "Anonymous"
-            : donorNameInput.value.trim();
+        let donorName;
 
 
         if (
-          !Number.isFinite(amount) ||
+          generalAnonymous.checked
+        ) {
+
+          donorName =
+            "Anonymous";
+
+        } else {
+
+          donorName =
+            generalDonorName
+              .value
+              .trim()
+              .replace(
+                /\s+/g,
+                " "
+              );
+
+
+          if (
+            !donorName
+          ) {
+
+            showGeneralStatus(
+              "Please enter a donor name or select Remain Anonymous.",
+              "error"
+            );
+
+            generalDonorName.focus();
+
+            return;
+
+          }
+
+        }
+
+
+        if (
+          !Number.isFinite(
+            amount
+          ) ||
           amount < 1
         ) {
 
-          showError(
-            "Please enter a valid donation amount."
+          showGeneralStatus(
+            "Please enter a donation amount of at least $1.",
+            "error"
           );
+
+          generalDonationAmount.focus();
 
           return;
 
         }
 
 
-        if (
-          !anonymous &&
-          !donorName
-        ) {
-
-          showError(
-            "Please enter your name or select anonymous."
-          );
-
-          return;
-
-        }
-
-
-        submitButton.disabled =
+        generalDonateButton.disabled =
           true;
 
-        submitButton.textContent =
-          "Loading...";
+        generalDonateButton.textContent =
+          "Creating Checkout...";
+
+
+        showGeneralStatus(
+          "Preparing secure checkout...",
+          "success"
+        );
 
 
         try {
 
           const response =
             await fetch(
-              "/api/create-checkout",
+              "/api/create-general-donation",
               {
-                method: "POST",
+
+                method:
+                  "POST",
 
                 headers: {
-                  "content-type":
+
+                  "Content-Type":
                     "application/json"
+
                 },
 
-                body: JSON.stringify({
-  checkoutType: "general",
-  amount,
-  donorName,
-  anonymous
-})
-                  )
+                body:
+                  JSON.stringify({
+
+                    amount,
+
+                    donorName,
+
+                    anonymous:
+                      generalAnonymous
+                        .checked
+
+                  })
+
               }
             );
 
@@ -1500,22 +1959,23 @@
 
 
           if (
-            !response.ok ||
-            !data.success
+            !response.ok
           ) {
 
             throw new Error(
               data.error ||
-              "Unable to start checkout."
+              "Unable to create donation checkout."
             );
 
           }
 
 
-          if (!data.url) {
+          if (
+            !data.url
+          ) {
 
             throw new Error(
-              "Stripe checkout URL was not returned."
+              "Checkout URL was not returned."
             );
 
           }
@@ -1524,28 +1984,88 @@
           window.location.href =
             data.url;
 
-        }
-        catch (error) {
 
-          console.error(error);
+        } catch (
+          error
+        ) {
 
-          showError(
-            error.message ||
-            "Unable to start checkout."
+          console.error(
+            error
           );
 
-          submitButton.disabled =
+
+          showGeneralStatus(
+            error.message ||
+            "General donation checkout is unavailable.",
+            "error"
+          );
+
+
+          generalDonateButton.disabled =
             false;
 
-          submitButton.textContent =
-            "Continue to Payment";
+
+          generalDonateButton.textContent =
+            "Donate to ECB Sunrise Black";
 
         }
 
       }
     );
 
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    if (
+      params.get(
+        "general_donation"
+      ) ===
+      "success"
+    ) {
+
+      showGeneralStatus(
+        "Thank you for supporting ECB Sunrise Black!",
+        "success"
+      );
+
+
+      document
+        .querySelector(
+          ".general-donation"
+        )
+        ?.scrollIntoView(
+          {
+            behavior:
+              "smooth"
+          }
+        );
+
+    }
+
+
+    if (
+      params.get(
+        "general_donation"
+      ) ===
+      "canceled"
+    ) {
+
+      showGeneralStatus(
+        "Donation checkout was canceled. No payment was made.",
+        "error"
+      );
+
+    }
+
   </script>
 
+
+</main>
+
 </body>
+
 </html>
