@@ -25,20 +25,14 @@ async function supabaseGet(env, path) {
     `${env.SUPABASE_URL}/rest/v1/${path}`,
     {
       headers: {
-        apikey:
-          env.SUPABASE_SERVICE_ROLE_KEY,
-
-        authorization:
-          `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
-
-        accept:
-          "application/json"
+        apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+        authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+        accept: "application/json"
       }
     }
   );
 
-  const text =
-    await response.text();
+  const text = await response.text();
 
   if (!response.ok) {
     throw new Error(
@@ -46,9 +40,7 @@ async function supabaseGet(env, path) {
     );
   }
 
-  return text
-    ? JSON.parse(text)
-    : [];
+  return text ? JSON.parse(text) : [];
 }
 
 export async function onRequestGet({
@@ -56,8 +48,7 @@ export async function onRequestGet({
   env
 }) {
   try {
-    const url =
-      new URL(request.url);
+    const url = new URL(request.url);
 
     const teamKey =
       url.searchParams.get("team") ||
@@ -76,12 +67,10 @@ export async function onRequestGet({
       );
     }
 
-    // Find the team.
-    const teams =
-      await supabaseGet(
-        env,
-        `teams?team_key=eq.${encodeURIComponent(teamKey)}&select=id,team_key,team_name&limit=1`
-      );
+    const teams = await supabaseGet(
+      env,
+      `teams?team_key=eq.${encodeURIComponent(teamKey)}&select=id,team_key,team_name&limit=1`
+    );
 
     if (!teams.length) {
       return json(
@@ -93,15 +82,12 @@ export async function onRequestGet({
       );
     }
 
-    const team =
-      teams[0];
+    const team = teams[0];
 
-    // Find the player inside the selected team.
-    const players =
-      await supabaseGet(
-        env,
-        `players?team_id=eq.${encodeURIComponent(team.id)}&player_key=eq.${encodeURIComponent(playerKey)}&select=id,player_key,player_name,player_number&limit=1`
-      );
+    const players = await supabaseGet(
+      env,
+      `players?team_id=eq.${encodeURIComponent(team.id)}&player_key=eq.${encodeURIComponent(playerKey)}&select=id,player_key,player_name,player_number&limit=1`
+    );
 
     if (!players.length) {
       return json(
@@ -113,70 +99,53 @@ export async function onRequestGet({
       );
     }
 
-    const player =
-      players[0];
+    const player = players[0];
 
-    // IMPORTANT:
-    // Your baseballs table does NOT have a team_id column.
-    // The team relationship is already established through:
-    // baseballs.player_id -> players.team_id
-    const baseballs =
-      await supabaseGet(
-        env,
-        `baseballs?player_id=eq.${encodeURIComponent(player.id)}&select=ball_number,amount_cents,status,donor_name,sold_at,stripe_session_id&order=ball_number.asc`
-      );
+    /*
+      IMPORTANT:
+      baseballs does NOT have team_id.
 
-    const soldBaseballs =
-      baseballs.filter(
-        baseball =>
-          baseball.status === "sold"
-      );
+      Team relationship:
+      baseballs.player_id
+          -> players.id
+          -> players.team_id
+    */
 
-    const raisedDollars =
-      soldBaseballs.reduce(
-        (total, baseball) => {
-          return (
-            total +
-            Number(baseball.ball_number || 0)
-          );
-        },
-        0
-      );
+    const baseballs = await supabaseGet(
+      env,
+      `baseballs?player_id=eq.${encodeURIComponent(player.id)}&select=ball_number,amount_cents,status,donor_name,sold_at,stripe_session_id&order=ball_number.asc`
+    );
+
+    const soldBaseballs = baseballs.filter(
+      baseball =>
+        baseball.status === "sold"
+    );
+
+    const raisedDollars = soldBaseballs.reduce(
+      (total, baseball) =>
+        total + Number(baseball.ball_number || 0),
+      0
+    );
 
     return json({
       success: true,
 
       team: {
-        team_key:
-          team.team_key,
-
-        team_name:
-          team.team_name
+        team_key: team.team_key,
+        team_name: team.team_name
       },
 
       player: {
-        player_key:
-          player.player_key,
-
-        player_name:
-          player.player_name,
-
-        player_number:
-          player.player_number
+        player_key: player.player_key,
+        player_name: player.player_name,
+        player_number: player.player_number
       },
 
       totals: {
-        baseball_count:
-          baseballs.length,
-
-        sold_count:
-          soldBaseballs.length,
-
-        raised_dollars:
-          raisedDollars,
-
-        goal_dollars:
-          5050
+        baseball_count: baseballs.length,
+        sold_count: soldBaseballs.length,
+        raised_dollars: raisedDollars,
+        goal_dollars: 5050
       },
 
       baseballs
@@ -188,7 +157,6 @@ export async function onRequestGet({
     return json(
       {
         success: false,
-
         error:
           error.message ||
           "Server error."
