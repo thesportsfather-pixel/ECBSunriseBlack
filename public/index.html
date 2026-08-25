@@ -1475,7 +1475,7 @@
 
           const response =
             await fetch(
-              "/api/create-general-donation",
+              "/api/create-checkout",
               {
                 method: "POST",
 
@@ -1484,13 +1484,12 @@
                     "application/json"
                 },
 
-                body:
-                  JSON.stringify(
-                    {
-                      amount,
-                      donorName,
-                      anonymous
-                    }
+                body: JSON.stringify({
+  checkoutType: "general",
+  amount,
+  donorName,
+  anonymous
+})
                   )
               }
             );
